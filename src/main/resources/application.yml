@@ -1,0 +1,38 @@
+---
+#spring.batch.job.enabled: false    # 어플리케이션 실행시 job 자동실행 멈춤
+#spring.batch.job.names: miracleMorning   // 특정 job만 실행하도록
+
+spring:
+  mvc:
+    dispatch-options-request: false
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    naming:
+      physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+    database: mysql
+  profiles:
+    group:
+      local: "local-envs,local-db"
+      dev: ""
+      production: ""
+    active: local
+
+---
+# local env
+spring.config.activate.on-profile: local-envs
+
+---
+# local db
+spring.config.activate.on-profile: local-db
+
+spring:
+  datasource:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: "jdbc:mysql://127.0.0.1:3306/MY_BATCH?serverTimezone=UTC&characterEncoding=UTF-8"
+      username: "root"
+      password: "nextage2020!"
+
+
