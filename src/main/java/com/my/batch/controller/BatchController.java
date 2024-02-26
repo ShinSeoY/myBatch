@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api")
+@RequestMapping("")
 public class BatchController {
 
     private final MemberService memberService;
@@ -20,6 +20,11 @@ public class BatchController {
     public ResponseEntity saveMember(@RequestBody SignupRequestDto signupRequestDto) {
         memberService.saveMember(signupRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("")
+    public String test() {
+        return "ok";
     }
 
 //    @GetMapping("")
