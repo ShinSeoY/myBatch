@@ -8,19 +8,9 @@ WORKDIR /app
 # 작업토리로 모든 파일을 복사
 COPY . .
 
-#COPY gradlew .
-#
-#COPY gradle gradle
-#
-#COPY build.gradle .
-#
-#COPY settings.gradle .
-#
-#COPY src src
-
 # gradle을 사용하여 springboot application 빌드
 # 이 작업을 통해 build/libs 디렉토리에 jar파일이 생성됨
-# RUN chmod +x ./gradlew
+RUN chmod +x ./gradlew
 RUN ./gradlew clean bootJar
 
 # jar 파일 실행

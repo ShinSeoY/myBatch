@@ -11,7 +11,7 @@ services:
       MYSQL_ROOT_PASSWORD: 1234
       TZ: 'Asia/Seoul'
     ports:
-      - "3306:3306"
+      - "3307:3306"
 #    volumes:
 #      - ./mysql/conf.d:/etc/mysql/conf.d # MySQL 설정 파일 위치
     command:
@@ -29,10 +29,10 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
-#    environment:
-#      SPRING_DATASOURCE_URL: jdbc:mysql://mysql_db:3306/users_db?useSSL=false&allowPublicKeyRetrieval=true
-#      SPRING_DATASOURCE_USERNAME: "root"
-#      SPRING_DATASOURCE_PASSWORD: "1234"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql_db:3306/MY_BATCH?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: "root"
+      SPRING_DATASOURCE_PASSWORD: "1234"
     depends_on:
       - database
     networks:
