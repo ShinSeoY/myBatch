@@ -20,25 +20,25 @@ public class SecurityConfig {
 //    private final AuthenticationTokenProvider authenticationTokenProvider;
 //    private final MyUserDetailsService myUserDetailsService;
 
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http.httpBasic((request) -> request.disable())
-//                .csrf(AbstractHttpConfigurer::disable)
-//                .cors(AbstractHttpConfigurer::disable)
-//                .authorizeHttpRequests((requests) -> requests.requestMatchers("/szs/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll().anyRequest().authenticated())
-//                .sessionManagement((requests) -> requests.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.httpBasic((request) -> request.disable())
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests((requests) -> requests.anyRequest().permitAll())
+                .sessionManagement((requests) -> requests.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 //                .addFilterBefore(new AuthenticationTokenFilter(authenticationTokenProvider, myUserDetailsService), UsernamePasswordAuthenticationFilter.class)
-//        ;
-//        return http.build();
-//    }
+        ;
+        return http.build();
+    }
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/szs/login", "/szs/signup");
-    }
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        return (web) -> web.ignoring().requestMatchers("/szs/login", "/szs/signup");
+//    }
 }
