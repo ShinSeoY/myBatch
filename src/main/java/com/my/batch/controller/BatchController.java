@@ -1,6 +1,6 @@
 package com.my.batch.controller;
 
-import com.my.batch.dto.signup.SignupRequestDto;
+import com.my.batch.dto.member.MemberRequestDto;
 import com.my.batch.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,19 +11,20 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("")
+@RequestMapping("/api")
 public class BatchController {
 
     private final MemberService memberService;
 
-    @PostMapping("")
-    public ResponseEntity saveMember(@RequestBody SignupRequestDto signupRequestDto) {
-        memberService.saveMember(signupRequestDto);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+//    @PostMapping("")
+//    public ResponseEntity saveMember(@RequestBody MemberRequestDto memberRequestDto) {
+//        memberService.saveMember(memberRequestDto);
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 
     @GetMapping("")
     public String test() {
+//        https://seodeveloper.tistory.com/125
         return "ok";
     }
 

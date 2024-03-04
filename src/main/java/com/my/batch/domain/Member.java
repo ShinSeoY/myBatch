@@ -22,15 +22,10 @@ public class Member {
     Integer id;
 
     @Column(unique = true, nullable = false)
-    String userId;
+    String email;
 
-    @Setter
-    String password;
-
-    String name;
-
-    @Column(unique = true)
-    String regNo;
+    @Column(nullable = false)
+    String phone;
 
     @CreatedDate
     LocalDateTime createdAt;

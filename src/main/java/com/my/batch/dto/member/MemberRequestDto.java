@@ -1,4 +1,4 @@
-package com.my.batch.dto.signup;
+package com.my.batch.dto.member;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,11 +9,9 @@ import lombok.RequiredArgsConstructor;
 @Builder
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class SignupRequestDto {
+public class MemberRequestDto {
 
-    String userId;
-    String password;
-    String name;
-    String regNo;
+    String email;
+    String phone;
 
 }
