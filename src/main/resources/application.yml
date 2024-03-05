@@ -20,6 +20,10 @@ spring:
       production: ""
     active: local
 
+security:
+  jwt:
+    key-value: "2AA4B45D5FB9FF29B722A57E3E9FAAF4F2DC33326953338C5F9B92783E"
+
 ---
 # local env
 spring.config.activate.on-profile: local-envs

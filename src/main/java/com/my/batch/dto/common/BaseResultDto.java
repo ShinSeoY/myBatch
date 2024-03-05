@@ -1,17 +1,14 @@
 package com.my.batch.dto.common;
 
-import com.my.batch.constant.ResultCode;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Getter
-@Builder
+@SuperBuilder
 @AllArgsConstructor
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class BaseResultDto {
 
-    ResultCode code;
+    String code;
 
 }

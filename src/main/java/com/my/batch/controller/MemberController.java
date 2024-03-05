@@ -1,6 +1,7 @@
 package com.my.batch.controller;
 
 import com.my.batch.dto.common.BaseResultDto;
+import com.my.batch.dto.member.LoginResponseDto;
 import com.my.batch.dto.member.MemberRequestDto;
 import com.my.batch.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<BaseResultDto> login(@RequestBody MemberRequestDto memberRequestDto) {
+    public ResponseEntity<LoginResponseDto> login(@RequestBody MemberRequestDto memberRequestDto) {
         return new ResponseEntity<>(memberService.login(memberRequestDto), HttpStatus.OK);
     }
 }
