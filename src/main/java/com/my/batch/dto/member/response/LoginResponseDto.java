@@ -1,7 +1,9 @@
-package com.my.batch.dto.member;
+package com.my.batch.dto.member.response;
 
 import com.my.batch.dto.common.BaseResultDto;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Getter

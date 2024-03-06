@@ -1,4 +1,4 @@
-package com.my.batch.dto.member;
+package com.my.batch.dto.member.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

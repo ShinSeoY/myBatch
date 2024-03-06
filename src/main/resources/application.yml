@@ -8,7 +8,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: false
+    show-sql: true
     naming:
       physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
       implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
@@ -35,7 +35,7 @@ spring.config.activate.on-profile: local-db
 spring:
   datasource:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: "jdbc:mysql://127.0.0.1:3306/EXCHANGE?serverTimezone=UTC&characterEncoding=UTF-8"
+      url: "jdbc:mysql://127.0.0.1:3306/MY_EXCHANGE?serverTimezone=UTC&characterEncoding=UTF-8"
       username: "root"
       password: "nextage2020!"
 

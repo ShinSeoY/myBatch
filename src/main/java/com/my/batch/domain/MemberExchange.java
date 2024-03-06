@@ -25,11 +25,11 @@ public class MemberExchange {
     Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "member_id", insertable = false, updatable = false)
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "exchange_id", insertable = false, updatable = false)
     private Exchange exchange;
 
     @CreatedDate

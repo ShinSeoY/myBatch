@@ -1,8 +1,10 @@
 package com.my.batch.controller;
 
-import com.my.batch.dto.common.BaseResultDto;
-import com.my.batch.dto.member.LoginResponseDto;
-import com.my.batch.dto.member.MemberRequestDto;
+import com.my.batch.annotation.LoginUser;
+import com.my.batch.domain.Member;
+import com.my.batch.dto.member.request.MemberRequestDto;
+import com.my.batch.dto.member.response.LoginResponseDto;
+import com.my.batch.dto.member.response.MemberFavListResponseDto;
 import com.my.batch.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,5 +29,10 @@ public class MemberController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@RequestBody MemberRequestDto memberRequestDto) {
         return new ResponseEntity<>(memberService.login(memberRequestDto), HttpStatus.OK);
+    }
+
+    @GetMapping("/fav")
+    public ResponseEntity<MemberFavListResponseDto> login(@LoginUser Member member) {
+        return new ResponseEntity<>(memberService.getMemberFavList(member), HttpStatus.OK);
     }
 }
