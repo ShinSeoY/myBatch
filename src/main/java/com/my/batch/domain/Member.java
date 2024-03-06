@@ -7,6 +7,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Builder
@@ -24,7 +25,6 @@ public class Member {
     @Column(unique = true, nullable = false)
     String email;
 
-    @Column(nullable = false)
     String phone;
 
     @CreatedDate
@@ -32,5 +32,8 @@ public class Member {
 
     @LastModifiedDate
     LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "member")
+    private List<MemberExchange> memberExchanges;
 
 }

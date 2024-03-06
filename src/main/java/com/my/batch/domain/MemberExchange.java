@@ -10,7 +10,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Builder
@@ -18,34 +17,25 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "exchange")
-public class Exchange {
+@Table(name = "member_exchange")
+public class MemberExchange {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    String name;
+    @ManyToOne
+    @JoinColumn(name = "id")
+    private Member member;
 
-    String krUnit;
-
-    String unit;
-
-    Double dealBasR;
-
-    Double exchangeRate;
-
-    Double ttb;
-
-    Double tts;
+    @ManyToOne
+    @JoinColumn(name = "id")
+    private Exchange exchange;
 
     @CreatedDate
     LocalDateTime createdAt;
 
     @LastModifiedDate
     LocalDateTime updatedAt;
-
-    @OneToMany(mappedBy = "exchange")
-    private List<MemberExchange> memberExchanges;
 
 }
