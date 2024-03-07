@@ -1,4 +1,4 @@
-package com.my.batch.dto.member.response;
+package com.my.batch.dto.exchange.response;
 
 import com.my.batch.dto.common.BaseResultDto;
 import lombok.AllArgsConstructor;
@@ -13,21 +13,22 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-public class MemberFavListResponseDto extends BaseResultDto {
+public class ExchangeListResponseDto extends BaseResultDto {
 
-    List<MemberFavDto> memberFavDtoList;
+    List<ExchangeDto> exchangeDtoList;
 
     @Getter
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class MemberFavDto {
+    public static class ExchangeDto {
 
         String name;
         String unit;
         Double dealBasR;
         Double exchangeRate;
-
+        Double ttb;
+        Double tts;
     }
 
 }

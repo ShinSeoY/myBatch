@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum ResultCode {
     SUCCESS("1000", "success", HttpStatus.OK),
+    NO_CONTENT("1001", "no-content", HttpStatus.OK),
     INVALID("E001", "invalid", HttpStatus.BAD_REQUEST),
     NOT_FOUND_USER("E002", "not-found-user", HttpStatus.BAD_REQUEST),
     UNAUTHORIZED("E003", "unauthorized", HttpStatus.UNAUTHORIZED),

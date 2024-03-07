@@ -60,9 +60,9 @@ public class MemberService {
         List<MemberExchange> member2 = memberExchangeRepository.findMemberExchanges(member.getEmail());
         return MemberFavListResponseDto.builder()
                 .code(ResultCode.SUCCESS.getCode())
-                .memberFavList(
+                .memberFavDtoList(
                         member2.stream().map((it) -> (
-                                        MemberFavListResponseDto.MemberFav.builder()
+                                        MemberFavListResponseDto.MemberFavDto.builder()
                                                 .name(it.getExchange().getName())
                                                 .unit(it.getExchange().getUnit())
                                                 .dealBasR(it.getExchange().getDealBasR())
