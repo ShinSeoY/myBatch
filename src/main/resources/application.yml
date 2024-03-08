@@ -1,8 +1,8 @@
 ---
-#spring.batch.job.enabled: false    # 어플리케이션 실행시 job 자동실행 멈춤
-#spring.batch.job.names: miracleMorning   // 특정 job만 실행하도록
-
 spring:
+  batch:
+    job:
+      enabled: true
   mvc:
     dispatch-options-request: false
   jpa:

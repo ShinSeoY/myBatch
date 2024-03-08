@@ -73,6 +73,7 @@ public class ExchangeUtils {
 
         ResponseEntity<String> map = restClient.get()
                 .uri(uriBuilder -> uriBuilder
+                        .scheme("https")
                         .host(host)
                         .path("/" + path)
                         .queryParam("authkey", authkey)
