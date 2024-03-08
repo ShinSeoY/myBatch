@@ -23,6 +23,7 @@ public class MemberFavListResponseDto extends BaseResultDto {
     @AllArgsConstructor
     public static class MemberFavDto {
 
+        Integer id;
         String name;
         String unit;
         Double dealBasR;

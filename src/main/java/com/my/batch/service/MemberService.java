@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -68,6 +69,7 @@ public class MemberService {
                 .memberFavDtoList(
                         memberExchangeList.stream().map((it) -> (
                                         MemberFavListResponseDto.MemberFavDto.builder()
+                                                .id(it.getExchange().getId())
                                                 .name(it.getExchange().getName())
                                                 .unit(it.getExchange().getUnit())
                                                 .dealBasR(it.getExchange().getDealBasR())
@@ -79,6 +81,7 @@ public class MemberService {
                 .build();
     }
 
+    @Transactional
     public BaseResultDto saveMemberFav(Member member, List<Integer> exchangeIdList) {
         for (Integer exchangeId : exchangeIdList) {
             MemberExchange existingMemberExchange = memberExchangeRepository.findById(
@@ -109,12 +112,13 @@ public class MemberService {
                 .build();
     }
 
+    @Transactional
     public BaseResultDto deleteMemberFav(Member member, Integer exchangeId) {
+
         memberExchangeRepository.deleteByMemberIdAndExchangeId(member.getId(), exchangeId);
         return BaseResultDto.builder()
                 .code(ResultCode.SUCCESS.getCode())
                 .build();
-
     }
 
 }

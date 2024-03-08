@@ -3,6 +3,7 @@ package com.my.batch.repository;
 import com.my.batch.domain.MemberExchange;
 import com.my.batch.domain.MemberExchangeId;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -11,6 +12,7 @@ public interface MemberExchangeRepository extends JpaRepository<MemberExchange, 
     @Query("SELECT me FROM MemberExchange me JOIN FETCH me.member JOIN FETCH me.exchange WHERE me.member.email = :email")
     List<MemberExchange> findMemberExchanges(String email);
 
-    @Query("DELETE FROM MemberExchange me WHERE me.member.id = :memberId AND me.exchange.id =:exchangeId")
+    @Modifying
+    @Query("DELETE FROM MemberExchange me WHERE me.id.memberId = :memberId AND me.id.exchangeId =:exchangeId")
     void deleteByMemberIdAndExchangeId(Integer memberId, Integer exchangeId);
 }
