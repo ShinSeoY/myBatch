@@ -13,7 +13,7 @@ import com.my.batch.exception.error.NotFoundUserException;
 import com.my.batch.repository.ExchangeRepository;
 import com.my.batch.repository.MemberExchangeRepository;
 import com.my.batch.repository.MemberRepository;
-import com.my.batch.security.AuthenticationTokenProvider;
+import com.my.batch.common.security.AuthenticationTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

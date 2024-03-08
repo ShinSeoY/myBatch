@@ -18,6 +18,7 @@ public enum ResultCode {
     INVALID_TOKEN("E006", "invalid-token", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED_SCRAP("E007", "unauthorized-scrap", HttpStatus.UNAUTHORIZED),
     DUPLICATED("E008", "duplicated-userId-or-regNo", HttpStatus.BAD_REQUEST),
+    PARSE_ERROR("E009", "json-parsing-error", HttpStatus.BAD_REQUEST),
     UNCAUGHT("E999", "system-error", HttpStatus.INTERNAL_SERVER_ERROR);
 
     private final String code;

@@ -14,6 +14,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ErrorCodeHandler {
 
+    @ExceptionHandler(ParsingException.class)
+    private ResponseEntity<Object> handleParsingException(final ParsingException e, final HttpServletRequest httpServletRequest) {
+        ErrorResponse response = ErrorResponse.of(e.getResultCode(), httpServletRequest.getRequestURI());
+        for (StackTraceElement element : e.getStackTrace()) {
+            log.error(element.toString());
+        }
+        return new ResponseEntity<>(response, e.getResultCode().getHttpStatus());
+    }
+
     @ExceptionHandler(InvalidValueException.class)
     private ResponseEntity<Object> handleInvalidValueException(final InvalidValueException e, final HttpServletRequest httpServletRequest) {
         ErrorResponse response = ErrorResponse.of(e.getResultCode(), httpServletRequest.getRequestURI());

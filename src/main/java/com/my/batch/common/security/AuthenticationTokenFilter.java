@@ -1,10 +1,5 @@
-package com.my.batch.security;
+package com.my.batch.common.security;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.my.batch.constant.ResultCode;
-import com.my.batch.exception.ErrorResponse;
 import com.my.batch.exception.error.InvalidTokenException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

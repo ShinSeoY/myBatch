@@ -1,4 +1,4 @@
-package com.my.batch.security;
+package com.my.batch.common.security;
 
 import com.my.batch.domain.Member;
 import com.my.batch.exception.error.NotFoundUserException;
