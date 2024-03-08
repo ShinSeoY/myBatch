@@ -23,6 +23,7 @@ public class ExchangeListResponseDto extends BaseResultDto {
     @AllArgsConstructor
     public static class ExchangeDto {
 
+        Integer id;
         String name;
         String unit;
         Double dealBasR;

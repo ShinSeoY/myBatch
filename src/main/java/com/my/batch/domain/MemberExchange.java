@@ -20,16 +20,17 @@ import java.time.LocalDateTime;
 @Table(name = "member_exchange")
 public class MemberExchange {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    @EmbeddedId
+    private MemberExchangeId id;
 
     @ManyToOne
-    @JoinColumn(name = "member_id", insertable = false, updatable = false)
+    @MapsId("memberId")
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "exchange_id", insertable = false, updatable = false)
+    @MapsId("exchangeId")
+    @JoinColumn(name = "exchange_id")
     private Exchange exchange;
 
     @CreatedDate

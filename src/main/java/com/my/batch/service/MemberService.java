@@ -1,12 +1,16 @@
 package com.my.batch.service;
 
 import com.my.batch.constant.ResultCode;
+import com.my.batch.domain.Exchange;
 import com.my.batch.domain.Member;
 import com.my.batch.domain.MemberExchange;
+import com.my.batch.domain.MemberExchangeId;
+import com.my.batch.dto.common.BaseResultDto;
 import com.my.batch.dto.member.request.MemberRequestDto;
 import com.my.batch.dto.member.response.LoginResponseDto;
 import com.my.batch.dto.member.response.MemberFavListResponseDto;
 import com.my.batch.exception.error.NotFoundUserException;
+import com.my.batch.repository.ExchangeRepository;
 import com.my.batch.repository.MemberExchangeRepository;
 import com.my.batch.repository.MemberRepository;
 import com.my.batch.security.AuthenticationTokenProvider;
@@ -25,6 +29,7 @@ import java.util.stream.Collectors;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final MemberExchangeRepository memberExchangeRepository;
+    private final ExchangeRepository exchangeRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AuthenticationTokenProvider authenticationTokenProvider;
 
@@ -57,11 +62,11 @@ public class MemberService {
     }
 
     public MemberFavListResponseDto getMemberFavList(Member member) {
-        List<MemberExchange> member2 = memberExchangeRepository.findMemberExchanges(member.getEmail());
+        List<MemberExchange> memberExchangeList = memberExchangeRepository.findMemberExchanges(member.getEmail());
         return MemberFavListResponseDto.builder()
                 .code(ResultCode.SUCCESS.getCode())
                 .memberFavDtoList(
-                        member2.stream().map((it) -> (
+                        memberExchangeList.stream().map((it) -> (
                                         MemberFavListResponseDto.MemberFavDto.builder()
                                                 .name(it.getExchange().getName())
                                                 .unit(it.getExchange().getUnit())
@@ -72,6 +77,44 @@ public class MemberService {
                         ).collect(Collectors.toList())
                 )
                 .build();
+    }
+
+    public BaseResultDto saveMemberFav(Member member, List<Integer> exchangeIdList) {
+        for (Integer exchangeId : exchangeIdList) {
+            MemberExchange existingMemberExchange = memberExchangeRepository.findById(
+                    MemberExchangeId.builder()
+                            .memberId(member.getId())
+                            .exchangeId(exchangeId)
+                            .build()
+            ).orElse(null);
+
+            if (existingMemberExchange == null) {
+                Exchange exchange = exchangeRepository.findById(exchangeId).orElseThrow();
+                memberExchangeRepository.save(
+                        MemberExchange.builder()
+                                .id(
+                                        MemberExchangeId.builder()
+                                                .exchangeId(exchangeId)
+                                                .memberId(member.getId())
+                                                .build()
+                                )
+                                .exchange(exchange)
+                                .member(member)
+                                .build()
+                );
+            }
+        }
+        return BaseResultDto.builder()
+                .code(ResultCode.SUCCESS.getCode())
+                .build();
+    }
+
+    public BaseResultDto deleteMemberFav(Member member, Integer exchangeId) {
+        memberExchangeRepository.deleteByMemberIdAndExchangeId(member.getId(), exchangeId);
+        return BaseResultDto.builder()
+                .code(ResultCode.SUCCESS.getCode())
+                .build();
+
     }
 
 }

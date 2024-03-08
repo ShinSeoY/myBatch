@@ -25,6 +25,7 @@ public class ExchangeService {
                         .exchangeDtoList(
                                 exchanges.stream().map((it) -> (
                                         ExchangeListResponseDto.ExchangeDto.builder()
+                                                .id(it.getId())
                                                 .name(it.getName())
                                                 .unit(it.getUnit())
                                                 .dealBasR(it.getDealBasR())

@@ -1,7 +1,9 @@
 package com.my.batch.controller;
 
 import com.my.batch.annotation.LoginUser;
+import com.my.batch.domain.Exchange;
 import com.my.batch.domain.Member;
+import com.my.batch.dto.common.BaseResultDto;
 import com.my.batch.dto.member.request.MemberRequestDto;
 import com.my.batch.dto.member.response.LoginResponseDto;
 import com.my.batch.dto.member.response.MemberFavListResponseDto;
@@ -11,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -32,7 +36,17 @@ public class MemberController {
     }
 
     @GetMapping("/fav")
-    public ResponseEntity<MemberFavListResponseDto> login(@LoginUser Member member) {
+    public ResponseEntity<MemberFavListResponseDto> getMemberFavList(@LoginUser Member member) {
         return new ResponseEntity<>(memberService.getMemberFavList(member), HttpStatus.OK);
+    }
+
+    @PostMapping("/fav")
+    public ResponseEntity<BaseResultDto> saveMemberFav(@LoginUser Member member, @RequestBody List<Integer> exchangeIdList) {
+        return new ResponseEntity<>(memberService.saveMemberFav(member, exchangeIdList), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/fav/{exchangeId}")
+    public ResponseEntity<BaseResultDto> deleteMemberFav(@LoginUser Member member, @PathVariable Integer exchangeId) {
+        return new ResponseEntity<>(memberService.deleteMemberFav(member, exchangeId), HttpStatus.OK);
     }
 }
