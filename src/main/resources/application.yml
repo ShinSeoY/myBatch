@@ -3,6 +3,9 @@ spring:
   batch:
     job:
       enabled: true
+    jdbc:
+      initialize-schema: always
+
   mvc:
     dispatch-options-request: false
   jpa:
