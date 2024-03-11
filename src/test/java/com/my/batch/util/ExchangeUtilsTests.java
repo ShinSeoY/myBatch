@@ -26,9 +26,9 @@ class ExchangeUtilsTests {
 	void getExchangeDataAsDtoList() {
 
 		// Given
-
+		String date = "20240309000000";
 		// When
-		List<ExchangeWebApiResponseDto> res = exchangeUtils.getExchangeDataAsDtoList();
+		List<ExchangeWebApiResponseDto> res = exchangeUtils.getExchangeDataAsDtoList(date);
 
 		// Then
 		assertNotNull(res);

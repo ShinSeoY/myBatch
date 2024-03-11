@@ -23,7 +23,7 @@ public class BatchSchedule {
     public void runJob() {
         JobParameters parameters = new JobParametersBuilder().addString("time", LocalDateTime.now().toString()).toJobParameters();
         try {
-            log.info("------------------------------scheduler");
+            log.info("scheduler is running ......{}", LocalDateTime.now());
             JobExecution execution = jobLauncher.run(exchangeSaveJob, parameters);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | org.springframework.batch.core.repository.JobRestartException e) {

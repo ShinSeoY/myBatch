@@ -34,14 +34,11 @@ public class ExchangeUtils {
     @Value("${exchange.path}")
     private String path;
 
-
     RestClient restClient = RestClient.create();
 
-    private final String searchdate = getSearchdate();
 
-
-    public List<ExchangeWebApiResponseDto> getExchangeDataAsDtoList() {
-        JsonNode jsonNode = getExchangeDataSync();
+    public List<ExchangeWebApiResponseDto> getExchangeDataAsDtoList(String date) {
+        JsonNode jsonNode = getExchangeDataSync(date);
 
         if (jsonNode != null && jsonNode.isArray()) {
             List<ExchangeWebApiResponseDto> exchangeWebApiResponseDtoList = new ArrayList<>();
@@ -64,7 +61,7 @@ public class ExchangeUtils {
         }
     }
 
-    private JsonNode getExchangeDataSync() {
+    private JsonNode getExchangeDataSync(String date) {
 
 //        DefaultUriBuilderFactory 객체를 생성하여 인코딩 모드를 None으로 변경하고 이를 아래와 같이 WebClient에 적용했습니다.
 //        queryParam을 사용할 때, API를 WebClient로 호출하기 위해서 인코딩을 하지 않도록 처리하였습니다.
@@ -77,7 +74,7 @@ public class ExchangeUtils {
                         .host(host)
                         .path("/" + path)
                         .queryParam("authkey", authkey)
-                        .queryParam("searchdate", searchdate)
+                        .queryParam("searchdate", getSearchdate(date))
                         .queryParam("data", type)
                         .build()
                 )
@@ -95,9 +92,9 @@ public class ExchangeUtils {
         }
     }
 
-    private String getSearchdate() {
+    private String getSearchdate(String date) {
 
-        LocalDateTime currentDate = LocalDateTime.now();
+        LocalDateTime currentDate = date == null ? LocalDateTime.now() : LocalDateTime.parse(date, DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
         DayOfWeek dayOfWeek = currentDate.getDayOfWeek();
 
         // 비영업일(토, 일, 오전11시 이전) 처리
@@ -105,7 +102,6 @@ public class ExchangeUtils {
             currentDate = currentDate.minusDays(1).toLocalDate().atTime(LocalTime.MAX);
         } else if (dayOfWeek.getValue() == 7) {     // 일요일
             currentDate = currentDate.minusDays(2).toLocalDate().atTime(LocalTime.MAX);
-            ;
         }
         if (currentDate.getHour() < 11) {        // 11시 이전
             currentDate = currentDate.minusDays(1).toLocalDate().atTime(LocalTime.MAX);
