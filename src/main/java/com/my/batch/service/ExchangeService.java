@@ -46,18 +46,7 @@ public class ExchangeService {
 
     public void saveExchangeList(List<ExchangeWebApiResponseDto> exchangeWebApiResponseDtoList){
         for(ExchangeWebApiResponseDto dto: exchangeWebApiResponseDtoList){
-            Double dealBasR = Double.valueOf(dto.getDeal_bas_r());
-            exchangeRepository.save(
-                    Exchange.builder()
-                            .name(dto.getCur_nm().split(" ")[0])
-                            .krUnit(dto.getCur_nm().split(" ")[1])
-                            .unit(dto.getCur_unit())
-                            .dealBasR(dealBasR)
-                            .exchangeRate(1000/dealBasR)
-                            .ttb(Double.valueOf(dto.getTtb()))
-                            .tts(Double.valueOf(dto.getTts()))
-                            .build()
-            );
+            exchangeRepository.save(ExchangeWebApiResponseDto.toExchange(dto));
         }
     }
 
