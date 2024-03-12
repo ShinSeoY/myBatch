@@ -22,14 +22,11 @@ import java.util.Set;
 public class Exchange {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    String unit;
 
     String name;
 
     String krUnit;
-
-    String unit;
 
     Double dealBasR;
 

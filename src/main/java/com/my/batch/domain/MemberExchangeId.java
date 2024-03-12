@@ -17,7 +17,7 @@ public class MemberExchangeId implements Serializable {
     @Column(name = "member_id")
     private Integer memberId;
 
-    @Column(name = "exchange_id")
-    private Integer exchangeId;
+    @Column(name = "exchange_unit")
+    private String exchangeUnit;
 
 }

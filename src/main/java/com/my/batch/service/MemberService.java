@@ -69,7 +69,6 @@ public class MemberService {
                 .memberFavDtoList(
                         memberExchangeList.stream().map((it) -> (
                                         MemberFavListResponseDto.MemberFavDto.builder()
-                                                .id(it.getExchange().getId())
                                                 .name(it.getExchange().getName())
                                                 .unit(it.getExchange().getUnit())
                                                 .dealBasR(it.getExchange().getDealBasR())
@@ -82,22 +81,22 @@ public class MemberService {
     }
 
     @Transactional
-    public BaseResultDto saveMemberFav(Member member, List<Integer> exchangeIdList) {
-        for (Integer exchangeId : exchangeIdList) {
+    public BaseResultDto saveMemberFav(Member member, List<String> exchangeUnitList) {
+        for (String exchangeUnit : exchangeUnitList) {
             MemberExchange existingMemberExchange = memberExchangeRepository.findById(
                     MemberExchangeId.builder()
                             .memberId(member.getId())
-                            .exchangeId(exchangeId)
+                            .exchangeUnit(exchangeUnit)
                             .build()
             ).orElse(null);
 
             if (existingMemberExchange == null) {
-                Exchange exchange = exchangeRepository.findById(exchangeId).orElseThrow();
+                Exchange exchange = exchangeRepository.findById(exchangeUnit).orElseThrow();
                 memberExchangeRepository.save(
                         MemberExchange.builder()
                                 .id(
                                         MemberExchangeId.builder()
-                                                .exchangeId(exchangeId)
+                                                .exchangeUnit(exchangeUnit)
                                                 .memberId(member.getId())
                                                 .build()
                                 )
@@ -113,9 +112,8 @@ public class MemberService {
     }
 
     @Transactional
-    public BaseResultDto deleteMemberFav(Member member, Integer exchangeId) {
-
-        memberExchangeRepository.deleteByMemberIdAndExchangeId(member.getId(), exchangeId);
+    public BaseResultDto deleteMemberFav(Member member, String exchangeUnit) {
+        memberExchangeRepository.deleteByMemberIdAndExchangeUnit(member.getId(), exchangeUnit);
         return BaseResultDto.builder()
                 .code(ResultCode.SUCCESS.getCode())
                 .build();

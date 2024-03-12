@@ -29,8 +29,8 @@ public class MemberExchange {
     private Member member;
 
     @ManyToOne
-    @MapsId("exchangeId")
-    @JoinColumn(name = "exchange_id")
+    @MapsId("exchangeUnit")
+    @JoinColumn(name = "exchange_unit")
     private Exchange exchange;
 
     @CreatedDate

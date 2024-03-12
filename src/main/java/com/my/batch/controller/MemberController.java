@@ -41,12 +41,12 @@ public class MemberController {
     }
 
     @PostMapping("/fav")
-    public ResponseEntity<BaseResultDto> saveMemberFav(@LoginUser Member member, @RequestBody List<Integer> exchangeIdList) {
-        return new ResponseEntity<>(memberService.saveMemberFav(member, exchangeIdList), HttpStatus.OK);
+    public ResponseEntity<BaseResultDto> saveMemberFav(@LoginUser Member member, @RequestBody List<String> exchangeUnitList) {
+        return new ResponseEntity<>(memberService.saveMemberFav(member, exchangeUnitList), HttpStatus.OK);
     }
 
-    @DeleteMapping("/fav/{exchangeId}")
-    public ResponseEntity<BaseResultDto> deleteMemberFav(@LoginUser Member member, @PathVariable Integer exchangeId) {
-        return new ResponseEntity<>(memberService.deleteMemberFav(member, exchangeId), HttpStatus.OK);
+    @DeleteMapping("/fav/{exchangeUnit}")
+    public ResponseEntity<BaseResultDto> deleteMemberFav(@LoginUser Member member, @PathVariable String exchangeUnit) {
+        return new ResponseEntity<>(memberService.deleteMemberFav(member, exchangeUnit), HttpStatus.OK);
     }
 }

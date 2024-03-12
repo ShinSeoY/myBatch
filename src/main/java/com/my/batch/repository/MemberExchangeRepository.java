@@ -13,6 +13,6 @@ public interface MemberExchangeRepository extends JpaRepository<MemberExchange, 
     List<MemberExchange> findMemberExchanges(String email);
 
     @Modifying
-    @Query("DELETE FROM MemberExchange me WHERE me.id.memberId = :memberId AND me.id.exchangeId =:exchangeId")
-    void deleteByMemberIdAndExchangeId(Integer memberId, Integer exchangeId);
+    @Query("DELETE FROM MemberExchange me WHERE me.id.memberId = :memberId AND me.id.exchangeUnit =:exchangeUnit")
+    void deleteByMemberIdAndExchangeUnit(Integer memberId, String exchangeUnit);
 }
