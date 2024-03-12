@@ -4,7 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.my.batch.dto.exchange.response.ExchangeWebApiResponseDto;
+import com.my.batch.exception.error.ExceededMaximumRequestsException;
 import com.my.batch.exception.error.ParsingException;
+import com.my.batch.exception.error.UndefinedRequestApiException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -45,7 +47,13 @@ public class ExchangeUtils {
 
             for (JsonNode node : jsonNode) {
                 ExchangeWebApiResponseDto exchangeWebApiResponseDto = convertJsonToExchangeDto(node);
-                exchangeWebApiResponseDtoList.add(exchangeWebApiResponseDto);
+                if(exchangeWebApiResponseDto.getResult() == 1){
+                    exchangeWebApiResponseDtoList.add(exchangeWebApiResponseDto);
+                } else if (exchangeWebApiResponseDto.getResult() == 4){ // 일일제한횟수 마감
+                    throw new ExceededMaximumRequestsException();
+                } else { // 2 : DATA 코드 오류  3 : 인증코드 오류
+                    throw new UndefinedRequestApiException();
+                }
             }
             return exchangeWebApiResponseDtoList;
         }

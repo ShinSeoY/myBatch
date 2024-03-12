@@ -14,6 +14,24 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ErrorCodeHandler {
 
+    @ExceptionHandler(UndefinedRequestApiException.class)
+    private ResponseEntity<Object> handleUndefinedRequestApiExceptionException(final ParsingException e, final HttpServletRequest httpServletRequest) {
+        ErrorResponse response = ErrorResponse.of(e.getResultCode(), httpServletRequest.getRequestURI());
+        for (StackTraceElement element : e.getStackTrace()) {
+            log.error(element.toString());
+        }
+        return new ResponseEntity<>(response, e.getResultCode().getHttpStatus());
+    }
+
+    @ExceptionHandler(ExceededMaximumRequestsException.class)
+    private ResponseEntity<Object> handleExceededMaximumRequestsException(final ParsingException e, final HttpServletRequest httpServletRequest) {
+        ErrorResponse response = ErrorResponse.of(e.getResultCode(), httpServletRequest.getRequestURI());
+        for (StackTraceElement element : e.getStackTrace()) {
+            log.error(element.toString());
+        }
+        return new ResponseEntity<>(response, e.getResultCode().getHttpStatus());
+    }
+
     @ExceptionHandler(ParsingException.class)
     private ResponseEntity<Object> handleParsingException(final ParsingException e, final HttpServletRequest httpServletRequest) {
         ErrorResponse response = ErrorResponse.of(e.getResultCode(), httpServletRequest.getRequestURI());
