@@ -37,6 +37,7 @@ public class Exchange {
     Double tts;
 
     @CreatedDate
+    @Column(updatable = false)
     LocalDateTime createdAt;
 
     @LastModifiedDate

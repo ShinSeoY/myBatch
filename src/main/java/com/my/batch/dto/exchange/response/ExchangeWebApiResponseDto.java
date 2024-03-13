@@ -6,11 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ExchangeWebApiResponseDto {
+public class ExchangeWebApiResponseDto implements Serializable {
 
     private Integer result; // 결과
     private String cur_unit; // 통화코드

@@ -19,12 +19,12 @@ public class BatchSchedule {
     private final JobLauncher jobLauncher;
     private final Job exchangeSaveJob;
 
-    @Scheduled(cron = "*/5 * * * * *")
+    @Scheduled(cron = "1 0 11 * * *") // 매일 아침 11시 0분 1초
     public void runJob() {
         JobParameters parameters = new JobParametersBuilder().addString("time", LocalDateTime.now().toString()).toJobParameters();
         try {
             log.info("scheduler is running ......{}", LocalDateTime.now());
-            JobExecution execution = jobLauncher.run(exchangeSaveJob, parameters);
+            jobLauncher.run(exchangeSaveJob, parameters);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | org.springframework.batch.core.repository.JobRestartException e) {
             log.error(e.getMessage());
