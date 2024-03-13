@@ -34,6 +34,7 @@ public class MemberExchange {
     private Exchange exchange;
 
     @CreatedDate
+    @Column(updatable = false)
     LocalDateTime createdAt;
 
     @LastModifiedDate

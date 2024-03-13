@@ -83,14 +83,6 @@ public class MemberService {
     @Transactional
     public BaseResultDto saveMemberFav(Member member, List<String> exchangeUnitList) {
         for (String exchangeUnit : exchangeUnitList) {
-            MemberExchange existingMemberExchange = memberExchangeRepository.findById(
-                    MemberExchangeId.builder()
-                            .memberId(member.getId())
-                            .exchangeUnit(exchangeUnit)
-                            .build()
-            ).orElse(null);
-
-            if (existingMemberExchange == null) {
                 Exchange exchange = exchangeRepository.findById(exchangeUnit).orElseThrow();
                 memberExchangeRepository.save(
                         MemberExchange.builder()
@@ -104,7 +96,6 @@ public class MemberService {
                                 .member(member)
                                 .build()
                 );
-            }
         }
         return BaseResultDto.builder()
                 .code(ResultCode.SUCCESS.getCode())
