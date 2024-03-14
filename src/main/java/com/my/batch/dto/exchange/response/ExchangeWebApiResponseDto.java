@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -26,17 +28,35 @@ public class ExchangeWebApiResponseDto implements Serializable {
     private String kftc_bkpr; // 서울외국환중개 매매기준율
     private String kftc_deal_bas_r; // 서울외국환중개장부가격
 
+    static List<String> specificNames = Arrays.asList("IDR(100)", "JPY(100)");
+
     static public Exchange toExchange(ExchangeWebApiResponseDto dto) {
         Double dealBasR = Double.valueOf(dto.getDeal_bas_r().replaceAll(",", ""));
         return Exchange.builder()
-                .name(dto.getCur_nm().split(" ")[0])
+                .name(validName(dto.getCur_nm(), dto.getCur_unit()))
+                .unit(validUnit(dto.getCur_unit()))
                 .krUnit(validKrUnit(dto.getCur_nm()))
-                .unit(dto.getCur_unit())
                 .dealBasR(dealBasR)
-                .exchangeRate(1000 / dealBasR)
+                .exchangeRate(calcExchangeRage(dealBasR, dto.getCur_unit())) // 소수점 둘째자리 반올림
                 .ttb(Double.valueOf(dto.getTtb().replaceAll(",", "")))
                 .tts(Double.valueOf(dto.getTts().replaceAll(",", "")))
                 .build();
+    }
+
+    private static String validName(String curNm, String curUnit) {
+        if (curUnit.equals("CNH")) {
+            return "중국";
+        } else {
+            return curNm.split(" ")[0];
+        }
+    }
+
+    private static String validUnit(String curUnit) {
+        if (specificNames.contains(curUnit)) {
+            return curUnit.replaceAll("\\(100\\)", "");
+        } else {
+            return curUnit;
+        }
     }
 
     private static String validKrUnit(String curNm) {
@@ -45,6 +65,13 @@ public class ExchangeWebApiResponseDto implements Serializable {
         } else {
             return curNm.split(" ")[0];
         }
+    }
+
+    private static Double calcExchangeRage(Double dealBasR, String curUnit) {
+        if (specificNames.contains(curUnit)) {
+            return (int) ((1000 / dealBasR * 100) * 100) / 100.0;
+        }
+        return (int) ((1000 / dealBasR) * 100) / 100.0;
     }
 
 }

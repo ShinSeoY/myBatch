@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -26,10 +27,12 @@ public class ExchangeListResponseDto extends BaseResultDto {
         Integer id;
         String name;
         String unit;
+        String krUnit;
         Double dealBasR;
         Double exchangeRate;
         Double ttb;
         Double tts;
+        LocalDateTime updatedAt;
     }
 
 }

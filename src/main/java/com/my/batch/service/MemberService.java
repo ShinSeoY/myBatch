@@ -1,5 +1,6 @@
 package com.my.batch.service;
 
+import com.my.batch.common.security.AuthenticationTokenProvider;
 import com.my.batch.constant.ResultCode;
 import com.my.batch.domain.Exchange;
 import com.my.batch.domain.Member;
@@ -13,9 +14,9 @@ import com.my.batch.exception.error.NotFoundUserException;
 import com.my.batch.repository.ExchangeRepository;
 import com.my.batch.repository.MemberExchangeRepository;
 import com.my.batch.repository.MemberRepository;
-import com.my.batch.common.security.AuthenticationTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,7 +64,7 @@ public class MemberService {
     }
 
     public MemberFavListResponseDto getMemberFavList(Member member) {
-        List<MemberExchange> memberExchangeList = memberExchangeRepository.findMemberExchanges(member.getEmail());
+        List<MemberExchange> memberExchangeList = memberExchangeRepository.findMemberExchanges(member.getEmail(), Sort.by(Sort.Direction.DESC, "updatedAt"));
         return MemberFavListResponseDto.builder()
                 .code(ResultCode.SUCCESS.getCode())
                 .memberFavDtoList(
@@ -71,8 +72,9 @@ public class MemberService {
                                         MemberFavListResponseDto.MemberFavDto.builder()
                                                 .name(it.getExchange().getName())
                                                 .unit(it.getExchange().getUnit())
+                                                .krUnit(it.getExchange().getKrUnit())
                                                 .dealBasR(it.getExchange().getDealBasR())
-                                                .exchangeRate(null)
+                                                .exchangeRate(it.getExchange().getExchangeRate())
                                                 .build()
                                 )
                         ).collect(Collectors.toList())
@@ -83,19 +85,19 @@ public class MemberService {
     @Transactional
     public BaseResultDto saveMemberFav(Member member, List<String> exchangeUnitList) {
         for (String exchangeUnit : exchangeUnitList) {
-                Exchange exchange = exchangeRepository.findById(exchangeUnit).orElseThrow();
-                memberExchangeRepository.save(
-                        MemberExchange.builder()
-                                .id(
-                                        MemberExchangeId.builder()
-                                                .exchangeUnit(exchangeUnit)
-                                                .memberId(member.getId())
-                                                .build()
-                                )
-                                .exchange(exchange)
-                                .member(member)
-                                .build()
-                );
+            Exchange exchange = exchangeRepository.findById(exchangeUnit).orElseThrow();
+            memberExchangeRepository.save(
+                    MemberExchange.builder()
+                            .id(
+                                    MemberExchangeId.builder()
+                                            .exchangeUnit(exchangeUnit)
+                                            .memberId(member.getId())
+                                            .build()
+                            )
+                            .exchange(exchange)
+                            .member(member)
+                            .build()
+            );
         }
         return BaseResultDto.builder()
                 .code(ResultCode.SUCCESS.getCode())
