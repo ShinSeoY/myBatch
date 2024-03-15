@@ -27,3 +27,4 @@ Docker-compose <br/>
 <br/>
 
 ## 구현 과정
+<img width="588" alt="image" src="https://github.com/ShinSeoY/myBatch/assets/63282412/44224c55-ebfc-44dc-aa02-c514c3888356">
