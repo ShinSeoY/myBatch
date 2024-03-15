@@ -16,7 +16,7 @@ Docker-compose <br/>
 <br/>
 
 ## 적용 기술
-> - Spring security <br/><br/>
+> - Spring security <br/><br/>
 > - 한국수출입은행 Open API 적용 <br/><br/>
 > - Spring Batch, Scheduler를 통한 오늘의 환율 정보 업데이트 <br/><br/>
 > - 나의 관심환율 설정 <br/><br/>
