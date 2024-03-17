@@ -1,8 +1,11 @@
 ---
 spring:
+  datasource:
+    hikari:
+      maximum-pool-size: 20
   batch:
     job:
-      enabled: true
+      enabled: false
     jdbc:
       initialize-schema: always
 
