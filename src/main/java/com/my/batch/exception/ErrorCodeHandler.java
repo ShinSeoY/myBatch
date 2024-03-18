@@ -2,6 +2,8 @@ package com.my.batch.exception;
 
 import com.my.batch.constant.ResultCode;
 import com.my.batch.exception.error.*;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -10,12 +12,35 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.security.SignatureException;
+
 @Slf4j
 @RestControllerAdvice
 public class ErrorCodeHandler {
 
+    @ExceptionHandler(SignatureException.class)
+    public ResponseEntity<Object> handleSignatureException(final SignatureException e, final HttpServletRequest httpServletRequest) {
+        ResultCode resultCode = ResultCode.UNAUTHORIZED;
+        ErrorResponse response = ErrorResponse.of(resultCode, httpServletRequest.getRequestURI());
+        return new ResponseEntity<>(response, resultCode.getHttpStatus());
+    }
+
+    @ExceptionHandler(MalformedJwtException.class)
+    public ResponseEntity<Object> handleMalformedJwtException(final MalformedJwtException e, final HttpServletRequest httpServletRequest) {
+        ResultCode resultCode = ResultCode.UNAUTHORIZED;
+        ErrorResponse response = ErrorResponse.of(resultCode, httpServletRequest.getRequestURI());
+        return new ResponseEntity<>(response, resultCode.getHttpStatus());
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<Object> handleExpiredJwtException(final ExpiredJwtException e, final HttpServletRequest httpServletRequest) {
+        ResultCode resultCode = ResultCode.UNAUTHORIZED;
+        ErrorResponse response = ErrorResponse.of(resultCode, httpServletRequest.getRequestURI());
+        return new ResponseEntity<>(response, resultCode.getHttpStatus());
+    }
+
     @ExceptionHandler(UndefinedRequestApiException.class)
-    private ResponseEntity<Object> handleUndefinedRequestApiExceptionException(final ParsingException e, final HttpServletRequest httpServletRequest) {
+    private ResponseEntity<Object> handleUndefinedRequestApiExceptionException(final UndefinedRequestApiException e, final HttpServletRequest httpServletRequest) {
         ErrorResponse response = ErrorResponse.of(e.getResultCode(), httpServletRequest.getRequestURI());
         for (StackTraceElement element : e.getStackTrace()) {
             log.error(element.toString());
@@ -24,7 +49,7 @@ public class ErrorCodeHandler {
     }
 
     @ExceptionHandler(ExceededMaximumRequestsException.class)
-    private ResponseEntity<Object> handleExceededMaximumRequestsException(final ParsingException e, final HttpServletRequest httpServletRequest) {
+    private ResponseEntity<Object> handleExceededMaximumRequestsException(final ExceededMaximumRequestsException e, final HttpServletRequest httpServletRequest) {
         ErrorResponse response = ErrorResponse.of(e.getResultCode(), httpServletRequest.getRequestURI());
         for (StackTraceElement element : e.getStackTrace()) {
             log.error(element.toString());

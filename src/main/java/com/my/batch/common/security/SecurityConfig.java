@@ -19,6 +19,8 @@ public class SecurityConfig {
 
     private final AuthenticationTokenProvider authenticationTokenProvider;
     private final MyUserDetailsService myUserDetailsService;
+    private final AuthenticationTokenFilter.CustomAccessDeniedHandler accessDeniedHandler;
+    private final AuthenticationTokenFilter.CustomAuthenticationEntryPoint authEntryPoint;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -28,7 +30,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests.anyRequest().permitAll())
                 .sessionManagement((requests) -> requests.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(new AuthenticationTokenFilter(authenticationTokenProvider, myUserDetailsService), UsernamePasswordAuthenticationFilter.class)
-        ;
+                .exceptionHandling((exceptionConfig) ->
+                        exceptionConfig.authenticationEntryPoint(authEntryPoint).accessDeniedHandler(accessDeniedHandler)
+                );
         return http.build();
     }
 
@@ -41,4 +45,5 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().requestMatchers("/api/member/login", "/api/member/signup");
     }
+
 }
