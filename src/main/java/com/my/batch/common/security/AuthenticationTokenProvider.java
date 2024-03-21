@@ -2,9 +2,7 @@ package com.my.batch.common.security;
 
 import com.my.batch.domain.Member;
 import com.my.batch.exception.error.InvalidTokenException;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -77,10 +75,18 @@ public class AuthenticationTokenProvider {
         return (String) payload.get("email");
     }
 
+    public Boolean verifyToken(String token) {
+        try {
+            Map<String, Object> payload = getPayload(token);
+            return payload != null && payload.get("email") != null;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     private Map<String, Object> getPayload(final String jwtString) {
         try {
-            Claims claims = (Claims) (Jwts.parserBuilder().setSigningKey(key).build().parse(jwtString).getBody());
-
+            Claims claims = (Claims) (Jwts.parserBuilder().setSigningKey(key).build().parse(jwtString.replaceAll("\"", "")).getBody());
             if (isNonExpired(claims.getExpiration())) {
                 Map<String, Object> payload = new HashMap<>();
                 for (String key : claims.keySet()) {
@@ -90,9 +96,18 @@ public class AuthenticationTokenProvider {
             } else {
                 throw new InvalidTokenException();
             }
+        } catch (MalformedJwtException e) {
+            // JWT 형식이 잘못되었을 경우
+            System.out.println("JWT 형식이 잘못되었습니다.");
+            throw new InvalidTokenException();
+        } catch (JwtException e) {
+            // 기타 JWT 예외 처리
+            System.out.println("JWT 검증 중 오류가 발생했습니다.");
+            throw new InvalidTokenException();
         } catch (InvalidTokenException e) {
             throw e;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new InvalidTokenException();
         }
     }

@@ -1,7 +1,7 @@
 package com.my.batch.controller;
 
 import com.my.batch.annotation.LoginUser;
-import com.my.batch.domain.Exchange;
+import com.my.batch.common.security.AuthenticationTokenProvider;
 import com.my.batch.domain.Member;
 import com.my.batch.dto.common.BaseResultDto;
 import com.my.batch.dto.member.request.MemberRequestDto;
@@ -23,6 +23,7 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
+    private final AuthenticationTokenProvider authenticationTokenProvider;
 
     @PostMapping("/signup")
     public ResponseEntity saveMember(@RequestBody MemberRequestDto memberRequestDto) {
@@ -33,6 +34,11 @@ public class MemberController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@RequestBody MemberRequestDto memberRequestDto) {
         return new ResponseEntity<>(memberService.login(memberRequestDto), HttpStatus.OK);
+    }
+
+    @PostMapping("/verify-token")
+    public ResponseEntity<Boolean> login(@RequestBody String token) {
+        return new ResponseEntity<>(authenticationTokenProvider.verifyToken(token), HttpStatus.OK);
     }
 
     @GetMapping("/fav")
