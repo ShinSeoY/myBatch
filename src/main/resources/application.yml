@@ -37,6 +37,14 @@ exchange:
   authkey: "x4aRpxsOtaWnsG2EipVpwkSJZsS4vrGs"
   type: "AP01"
 
+coolsms:
+  sender: "01079990497"
+  provider: https://api.coolsms.co.kr
+  api:
+    key: "NCSVQAERJWAZNLOU"
+    secret: "MDMCIKAYBBHACAFOGVXZTLKAPRCOMRRS"
+
+
 ---
 # local env
 spring.config.activate.on-profile: local-envs
