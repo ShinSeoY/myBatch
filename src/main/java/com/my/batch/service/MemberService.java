@@ -1,10 +1,12 @@
 package com.my.batch.service;
 
 import com.my.batch.common.security.AuthenticationTokenProvider;
+import com.my.batch.constant.CalcType;
 import com.my.batch.constant.ResultCode;
 import com.my.batch.domain.*;
 import com.my.batch.dto.common.BaseResultDto;
 import com.my.batch.dto.member.request.MemberRequestDto;
+import com.my.batch.dto.member.request.NotificationRequestDto;
 import com.my.batch.dto.member.response.LoginResponseDto;
 import com.my.batch.dto.member.response.MemberFavListResponseDto;
 import com.my.batch.exception.error.NotFoundUserException;
@@ -117,15 +119,18 @@ public class MemberService {
     }
 
     @Transactional
-    public BaseResultDto enableNotification(Member member, List<String> enabledNotificatonList) {
-        if (!enabledNotificatonList.isEmpty()) {
-            boolean isEnabledEmail = enabledNotificatonList.contains(EMAIL);
-            boolean isEnabledSms = enabledNotificatonList.contains(SMS);
+    public BaseResultDto enableNotification(Member member, NotificationRequestDto notificationRequestDto) {
+        if (notificationRequestDto != null && !notificationRequestDto.getEnabledNotificatonList().isEmpty()) {
+
+            boolean isEnabledEmail = notificationRequestDto.getEnabledNotificatonList().contains(EMAIL);
+            boolean isEnabledSms = notificationRequestDto.getEnabledNotificatonList().contains(SMS);
 
             Notification notification = Notification.builder()
                     .member(member)
                     .smsEnabled(isEnabledSms)
                     .emailEnabled(isEnabledEmail)
+                    .calcType(CalcType.of(notificationRequestDto.getCalcType()))
+                    .goalExchangeRate(notificationRequestDto.getGoalExchangeRate())
                     .isEnabled(true)
                     .build();
             notificationRepository.save(notification);

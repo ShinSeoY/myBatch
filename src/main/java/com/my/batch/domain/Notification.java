@@ -1,5 +1,6 @@
 package com.my.batch.domain;
 
+import com.my.batch.constant.CalcType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,6 +28,11 @@ public class Notification {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
+
+    private Double goalExchangeRate;
+
+    @Enumerated(EnumType.STRING)
+    private CalcType calcType;
 
     boolean smsEnabled;
 

@@ -5,6 +5,7 @@ import com.my.batch.common.security.AuthenticationTokenProvider;
 import com.my.batch.domain.Member;
 import com.my.batch.dto.common.BaseResultDto;
 import com.my.batch.dto.member.request.MemberRequestDto;
+import com.my.batch.dto.member.request.NotificationRequestDto;
 import com.my.batch.dto.member.response.LoginResponseDto;
 import com.my.batch.dto.member.response.MemberFavListResponseDto;
 import com.my.batch.service.MemberService;
@@ -84,11 +85,11 @@ public class MemberController {
 
     /**
      * @param member
-     * @param enabledNotificatonList
+     * @param notificationRequestDto
      * @apiNote 알림 설정
      */
     @PostMapping("/notification")
-    public ResponseEntity<BaseResultDto> enableNotification(@LoginUser Member member, @RequestBody List<String> enabledNotificatonList) {
-        return new ResponseEntity<>(memberService.enableNotification(member, enabledNotificatonList), HttpStatus.OK);
+    public ResponseEntity<BaseResultDto> enableNotification(@LoginUser Member member, @RequestBody NotificationRequestDto notificationRequestDto) {
+        return new ResponseEntity<>(memberService.enableNotification(member, notificationRequestDto), HttpStatus.OK);
     }
 }
