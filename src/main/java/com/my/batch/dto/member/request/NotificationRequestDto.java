@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class NotificationRequestDto {
+    String unit;
     Double goalExchangeRate;
     String calcType; // gte || lte
     List<String> enabledNotificatonList;

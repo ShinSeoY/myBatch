@@ -9,6 +9,7 @@ import com.my.batch.dto.member.request.MemberRequestDto;
 import com.my.batch.dto.member.request.NotificationRequestDto;
 import com.my.batch.dto.member.response.LoginResponseDto;
 import com.my.batch.dto.member.response.MemberFavListResponseDto;
+import com.my.batch.dto.member.response.NotificationResponseDto;
 import com.my.batch.exception.error.NotFoundUserException;
 import com.my.batch.repository.ExchangeRepository;
 import com.my.batch.repository.MemberExchangeRepository;
@@ -118,6 +119,26 @@ public class MemberService {
                 .build();
     }
 
+    public NotificationResponseDto findNotification(Member member) {
+        Notification notification = notificationRepository.findByMemberId(member.getId());
+        if (notification != null) {
+            return NotificationResponseDto.builder()
+                    .code(ResultCode.SUCCESS.getCode())
+                    .result(
+                            NotificationResponseDto.NotificationResponse.builder()
+                                    .unit(notification.getUnit())
+                                    .goalExchangeRate(notification.getGoalExchangeRate())
+                                    .calcType(notification.getCalcType())
+                                    .emailEnabled(notification.isEmailEnabled())
+                                    .smsEnabled(notification.isSmsEnabled())
+                                    .build()
+                    ).build();
+        }
+        return NotificationResponseDto.builder()
+                .code(ResultCode.NO_CONTENT.getCode())
+                .build();
+    }
+
     @Transactional
     public BaseResultDto enableNotification(Member member, NotificationRequestDto notificationRequestDto) {
         if (notificationRequestDto != null && !notificationRequestDto.getEnabledNotificatonList().isEmpty()) {
@@ -127,6 +148,7 @@ public class MemberService {
 
             Notification notification = Notification.builder()
                     .member(member)
+                    .unit(notificationRequestDto.getUnit())
                     .smsEnabled(isEnabledSms)
                     .emailEnabled(isEnabledEmail)
                     .calcType(CalcType.of(notificationRequestDto.getCalcType()))

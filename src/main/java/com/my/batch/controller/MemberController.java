@@ -8,6 +8,7 @@ import com.my.batch.dto.member.request.MemberRequestDto;
 import com.my.batch.dto.member.request.NotificationRequestDto;
 import com.my.batch.dto.member.response.LoginResponseDto;
 import com.my.batch.dto.member.response.MemberFavListResponseDto;
+import com.my.batch.dto.member.response.NotificationResponseDto;
 import com.my.batch.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -81,6 +82,15 @@ public class MemberController {
     @DeleteMapping("/fav/{exchangeUnit}")
     public ResponseEntity<BaseResultDto> deleteMemberFav(@LoginUser Member member, @PathVariable String exchangeUnit) {
         return new ResponseEntity<>(memberService.deleteMemberFav(member, exchangeUnit), HttpStatus.OK);
+    }
+
+    /**
+     * @param member
+     * @apiNote 알림 설정 조회
+     */
+    @GetMapping("/notification")
+    public ResponseEntity<NotificationResponseDto> findNotification(@LoginUser Member member) {
+        return new ResponseEntity<>(memberService.findNotification(member), HttpStatus.OK);
     }
 
     /**
