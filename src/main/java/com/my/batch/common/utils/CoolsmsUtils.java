@@ -39,29 +39,4 @@ public class CoolsmsUtils {
         return response;
     }
 
-//    public void sendVerificationMessage(String to, LocalDateTime sentAt){
-//        Message message = new Message();
-//        message.setFrom(smsSender);
-//        message.setTo(to);
-//
-//        VerificationCode verificationCode = VerificationCodeGenerator
-//                .generateVerificationCode(sentAt);
-//        verificationCodeRepository.save(verificationCode);
-//
-//        String text = verificationCode.generateCodeMessage();
-//        message.setText(text);
-//
-//        messageService.sendOne(new SingleMessageSendingRequest(message));
-//    }
-//
-//    public void verifyCode(String code, LocalDateTime verifiedAt){
-//        VerificationCode verificationCode = verificationCodeRepository.findByCode(code)
-//                .orElseThrow(() -> new GeneralException(ErrorStatus._VERIFICATION_CODE_NOT_FOUND));
-//
-//        if(verificationCode.isExpired(verifiedAt)){
-//            throw new GeneralException(ErrorStatus._VERIFICATION_CODE_EXPIRED);
-//        }
-//
-//        verificationCodeRepository.remove(verificationCode);
-//    }
 }

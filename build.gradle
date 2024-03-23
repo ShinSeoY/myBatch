@@ -37,6 +37,9 @@ dependencies {
 	// CoolSMS
 	implementation 'net.nurigo:sdk:4.3.0'
 
+	// SMTP
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation 'org.springframework.batch:spring-batch-test'

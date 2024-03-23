@@ -1,13 +1,24 @@
 ---
 spring:
-  datasource:
-    hikari:
-      maximum-pool-size: 20
   batch:
     job:
       enabled: false
     jdbc:
       initialize-schema: always
+  mail:
+    default-encoding: UTF-8
+    host: smtp.gmail.com
+    port: 587
+    username: "tjdudtls312@gmail.com"
+    password: "bhmm acgf jfjl wytp"
+    properties:
+      mail:
+        mime:
+          charset: UTF-8
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
   mvc:
     dispatch-options-request: false
@@ -43,7 +54,6 @@ coolsms:
   api:
     key: "NCSVQAERJWAZNLOU"
     secret: "MDMCIKAYBBHACAFOGVXZTLKAPRCOMRRS"
-
 
 ---
 # local env

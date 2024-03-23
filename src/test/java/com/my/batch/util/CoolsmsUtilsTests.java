@@ -16,7 +16,7 @@ class CoolsmsUtilsTests {
     private CoolsmsUtils coolsmsUtils;
 
     @Test
-    void getExchangeDataAsDtoList() {
+    void sendSms() {
 
         // Given
         SendSMSRequestDto sendSMSRequestDto = SendSMSRequestDto.builder()
