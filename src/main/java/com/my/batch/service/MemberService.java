@@ -2,10 +2,7 @@ package com.my.batch.service;
 
 import com.my.batch.common.security.AuthenticationTokenProvider;
 import com.my.batch.constant.ResultCode;
-import com.my.batch.domain.Exchange;
-import com.my.batch.domain.Member;
-import com.my.batch.domain.MemberExchange;
-import com.my.batch.domain.MemberExchangeId;
+import com.my.batch.domain.*;
 import com.my.batch.dto.common.BaseResultDto;
 import com.my.batch.dto.member.request.MemberRequestDto;
 import com.my.batch.dto.member.response.LoginResponseDto;
@@ -14,6 +11,7 @@ import com.my.batch.exception.error.NotFoundUserException;
 import com.my.batch.repository.ExchangeRepository;
 import com.my.batch.repository.MemberExchangeRepository;
 import com.my.batch.repository.MemberRepository;
+import com.my.batch.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -32,8 +30,14 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final MemberExchangeRepository memberExchangeRepository;
     private final ExchangeRepository exchangeRepository;
+    private final NotificationRepository notificationRepository;
+
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AuthenticationTokenProvider authenticationTokenProvider;
+
+    private final String EMAIL = "email";
+    private final String SMS = "sms";
+
 
     public void saveMember(MemberRequestDto memberRequestDto) {
         memberRepository.save(
@@ -107,6 +111,25 @@ public class MemberService {
     @Transactional
     public BaseResultDto deleteMemberFav(Member member, String exchangeUnit) {
         memberExchangeRepository.deleteByMemberIdAndExchangeUnit(member.getId(), exchangeUnit);
+        return BaseResultDto.builder()
+                .code(ResultCode.SUCCESS.getCode())
+                .build();
+    }
+
+    @Transactional
+    public BaseResultDto enableNotification(Member member, List<String> enabledNotificatonList) {
+        if (!enabledNotificatonList.isEmpty()) {
+            boolean isEnabledEmail = enabledNotificatonList.contains(EMAIL);
+            boolean isEnabledSms = enabledNotificatonList.contains(SMS);
+
+            Notification notification = Notification.builder()
+                    .member(member)
+                    .smsEnabled(isEnabledSms)
+                    .emailEnabled(isEnabledEmail)
+                    .isEnabled(true)
+                    .build();
+            notificationRepository.save(notification);
+        }
         return BaseResultDto.builder()
                 .code(ResultCode.SUCCESS.getCode())
                 .build();

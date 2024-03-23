@@ -10,7 +10,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Getter
 @Builder
@@ -18,28 +17,27 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "member")
-public class Member {
+@Table(name = "notification")
+public class Notification {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @Column(unique = true, nullable = false)
-    String email;
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 
-    String phone;
+    boolean smsEnabled;
+
+    boolean emailEnabled;
+
+    boolean isEnabled;
 
     @CreatedDate
     LocalDateTime createdAt;
 
     @LastModifiedDate
     LocalDateTime updatedAt;
-
-    @OneToMany(mappedBy = "member")
-    private Set<MemberExchange> memberExchanges;
-
-    @OneToMany(mappedBy = "member")
-    private Set<Notification> notifications;
 
 }
