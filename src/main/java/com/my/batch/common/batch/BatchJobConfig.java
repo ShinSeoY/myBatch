@@ -28,13 +28,15 @@ public class BatchJobConfig {
     private final ExchangeUtils exchangeUtils;
     private final ExchangeService exchangeService;
     private final BatchStatusRepository batchStatusRepository;
-    private final String JOB_NAME = "exchangeSaveJob";
-    private final String LAST_STEP_NAME = "saveStep";
+    private final String EXCHANGE_JOB_NAME = "exchangeSaveJob";
+    private final String EXCHANGE_LAST_STEP_NAME = "saveStep";
     private final String SUCCESS_EXIT_STATUS = "COMPLETED";
+
+    private final String NOTIFICATION_JOB_NAME = "notification";
 
     @Bean
     public Job exchangeSaveJob(JobRepository jobRepository, Step parsingStep, Step saveStep) {
-        return new JobBuilder(JOB_NAME, jobRepository)
+        return new JobBuilder(EXCHANGE_JOB_NAME, jobRepository)
                 .start(parsingStep)
                 .on(SUCCESS_EXIT_STATUS)
                 .to(saveStep)
@@ -90,7 +92,7 @@ public class BatchJobConfig {
             public ExitStatus afterStep(StepExecution stepExecution) {
 
                 BatchStatus batchStatus = BatchStatus.builder()
-                        .jobName(JOB_NAME)
+                        .jobName(EXCHANGE_JOB_NAME)
                         .status(stepExecution.getExitStatus().getExitCode())
                         .startTime(startTime)
                         .failStepName("-")
@@ -98,7 +100,7 @@ public class BatchJobConfig {
                         .build();
 
                 // 마지막 스텝이 COMPLETED 인 상태로 종료
-                if (stepExecution.getStatus().name().equals(SUCCESS_EXIT_STATUS) && stepExecution.getStepName().equals(LAST_STEP_NAME)) {
+                if (stepExecution.getStatus().name().equals(SUCCESS_EXIT_STATUS) && stepExecution.getStepName().equals(EXCHANGE_LAST_STEP_NAME)) {
                     batchStatus.setEndTime(LocalDateTime.now());
                     batchStatusRepository.save(batchStatus);
                 }
