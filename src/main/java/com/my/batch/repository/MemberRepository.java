@@ -8,8 +8,4 @@ import java.util.Optional;
 public interface MemberRepository extends JpaRepository<Member, Integer> {
     Optional<Member> findByEmail(String email);
 
-//    @Modifying
-//    @Query("UPDATE Member m SET m.emailEnabled = :isEnabledEmail, m.smsEnabled = :isEnabledSms WHERE m.id = :id")
-//    void updateNotification(Integer id, boolean isEnabledEmail, boolean isEnabledSms);
-
 }

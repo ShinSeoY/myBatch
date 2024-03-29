@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -36,10 +37,12 @@ public class Member {
     @LastModifiedDate
     LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "member")
+    @BatchSize(size = 100)
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private Set<MemberExchange> memberExchanges;
 
-    @OneToMany(mappedBy = "member")
+    @BatchSize(size = 100)
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private Set<Notification> notifications;
 
 }
