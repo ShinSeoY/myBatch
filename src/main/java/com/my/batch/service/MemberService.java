@@ -126,7 +126,7 @@ public class MemberService {
                     .code(ResultCode.SUCCESS.getCode())
                     .result(
                             NotificationResponseDto.NotificationResponse.builder()
-                                    .unit(notification.getUnit())
+                                    .unit(notification.getExchange().getUnit())
                                     .goalExchangeRate(notification.getGoalExchangeRate())
                                     .calcType(notification.getCalcType())
                                     .emailEnabled(notification.isEmailEnabled())
@@ -142,13 +142,14 @@ public class MemberService {
     @Transactional
     public BaseResultDto enableNotification(Member member, NotificationRequestDto notificationRequestDto) {
         if (notificationRequestDto != null && !notificationRequestDto.getEnabledNotificatonList().isEmpty()) {
+            Exchange exchange = exchangeRepository.findById(notificationRequestDto.getUnit()).orElseThrow();
 
             boolean isEnabledEmail = notificationRequestDto.getEnabledNotificatonList().contains(EMAIL);
             boolean isEnabledSms = notificationRequestDto.getEnabledNotificatonList().contains(SMS);
 
             Notification notification = Notification.builder()
                     .member(member)
-                    .unit(notificationRequestDto.getUnit())
+                    .exchange(exchange)
                     .smsEnabled(isEnabledSms)
                     .emailEnabled(isEnabledEmail)
                     .calcType(CalcType.of(notificationRequestDto.getCalcType()))

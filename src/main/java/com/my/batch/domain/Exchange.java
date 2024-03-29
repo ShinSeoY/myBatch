@@ -48,4 +48,8 @@ public class Exchange {
     @OneToMany(mappedBy = "exchange", fetch = FetchType.LAZY)
     private Set<MemberExchange> memberExchanges;
 
+    @BatchSize(size = 100)
+    @OneToMany(mappedBy = "exchange", fetch = FetchType.LAZY)
+    private Set<Notification> notifications;
+
 }

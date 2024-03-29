@@ -26,7 +26,9 @@ public class Notification {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    private String unit;
+    @ManyToOne
+    @JoinColumn(name = "exchange_unit")
+    private Exchange exchange;
 
     private Double goalExchangeRate;
 
