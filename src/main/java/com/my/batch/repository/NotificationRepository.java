@@ -12,6 +12,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Inte
 
 
     @Modifying
-    @Query("SELECT DISTINCT n FROM Notification n LEFT JOIN FETCH n.member WHERE n.isEnabled = :isEnabled")
+    @Query("SELECT DISTINCT n FROM Notification n LEFT JOIN FETCH n.member LEFT JOIN FETCH n.exchange WHERE n.isEnabled = :isEnabled")
     List<Notification> findByEnabled(boolean isEnabled);
 }

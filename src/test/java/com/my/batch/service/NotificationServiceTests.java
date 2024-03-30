@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 
 @SpringBootTest
 class NotificationServiceTests {
@@ -21,5 +22,16 @@ class NotificationServiceTests {
         List<Notification> notifications = notificationService.validPeriod();
 
         assertThat(notifications).isNotEmpty();
+    }
+
+    @Test
+    public void sendMsg() {
+        // Given
+        List<Notification> notifications = notificationService.validPeriod();
+
+        // When
+        notificationService.sendMsg(notifications);
+
+        assertThatNoException();
     }
 }
