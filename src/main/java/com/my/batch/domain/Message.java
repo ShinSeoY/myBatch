@@ -1,17 +1,17 @@
 package com.my.batch.domain;
 
+import com.my.batch.constant.MsgType;
+import com.my.batch.constant.SendType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.BatchSize;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Getter
 @Builder
@@ -19,34 +19,39 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "member")
-public class Member {
+@Table(name = "massage")
+public class Message {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @Column(unique = true, nullable = false)
-    String email;
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 
-    String phone;
+    @Enumerated(EnumType.STRING)
+    private MsgType msgType;
+
+    private String email;
+
+    private String phone;
+
+    private String content;
+
+    @Enumerated(EnumType.STRING)
+    private SendType sendStatus;
+
+    @Enumerated(EnumType.STRING)
+    private SendType sendResult;
+
+    @Column(columnDefinition = "longtext")
+    private String errorMsg;
 
     @CreatedDate
     LocalDateTime createdAt;
 
     @LastModifiedDate
     LocalDateTime updatedAt;
-
-    @BatchSize(size = 100)
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private Set<MemberExchange> memberExchanges;
-
-    @BatchSize(size = 100)
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private Set<Notification> notifications;
-
-    @BatchSize(size = 100)
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private Set<Message> messages;
 
 }
