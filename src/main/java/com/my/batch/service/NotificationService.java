@@ -44,22 +44,17 @@ public class NotificationService {
             Boolean isReachedStatus = false;
             int res = it.getGoalExchangeRate().compareTo(it.getExchange().getDealBasR());
 
-            if (res == 0 || it.getCalcType().equals(CalcType.GTE) ? res > 0 : res < 0) {
+            if (res == 0 || it.getCalcType().equals(CalcType.LTE) ? res > 0 : res < 0) {
                 isReachedStatus = true;
             }
-
             if (isReachedStatus && it.isEmailEnabled()) {
-                System.out.println(it.getMember().getEmail());
-                System.out.println("----sendEmail");
-
                 sendEmail(it);
+                it.setEnabled(false);
             }
             if (isReachedStatus && it.isSmsEnabled()) {
-                System.out.println(it.getMember().getEmail());
-                System.out.println("----sendSms");
                 sendSms(it);
+                it.setEnabled(false);
             }
-            it.setEnabled(false);
             notificationRepository.save(it);
         });
     }
@@ -70,7 +65,6 @@ public class NotificationService {
                 .title("오늘의 환율 알림 서비스")
                 .content(getText(notification))
                 .build();
-
         smtpUtils.sendEmail(sendEmailRequestDto);
     }
 
