@@ -1,5 +1,6 @@
 package com.my.batch.common.utils;
 
+import com.my.batch.exception.error.SendMsgFailErrorException;
 import jakarta.annotation.PostConstruct;
 import net.nurigo.sdk.NurigoApp;
 import net.nurigo.sdk.message.model.Message;
@@ -36,6 +37,9 @@ public class CoolsmsUtils {
         message.setText(text);
 
         SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+        if (!response.getStatusCode().equals("2000")) {
+            throw new SendMsgFailErrorException();
+        }
         return response;
     }
 
