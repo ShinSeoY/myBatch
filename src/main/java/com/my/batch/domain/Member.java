@@ -45,8 +45,4 @@ public class Member {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private Set<Notification> notifications;
 
-    @BatchSize(size = 100)
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private Set<Message> messages;
-
 }

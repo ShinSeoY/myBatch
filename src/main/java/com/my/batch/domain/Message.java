@@ -3,10 +3,7 @@ package com.my.batch.domain;
 import com.my.batch.constant.MsgType;
 import com.my.batch.constant.SendType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -18,6 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Setter
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "massage")
 public class Message {
@@ -26,9 +24,7 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
+    Integer memberId;
 
     @Enumerated(EnumType.STRING)
     private MsgType msgType;
