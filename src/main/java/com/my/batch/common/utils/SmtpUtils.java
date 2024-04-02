@@ -1,6 +1,7 @@
 package com.my.batch.common.utils;
 
 import com.my.batch.dto.smtp.request.SendEmailRequestDto;
+import com.my.batch.exception.error.SendMsgFailErrorException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -27,6 +28,7 @@ public class SmtpUtils {
             emailSender.send(message);
         } catch (Exception e) {
             e.printStackTrace();
+            throw new SendMsgFailErrorException();
         }
     }
 }

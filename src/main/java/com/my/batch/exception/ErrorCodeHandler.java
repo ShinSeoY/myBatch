@@ -18,9 +18,9 @@ import java.security.SignatureException;
 @RestControllerAdvice
 public class ErrorCodeHandler {
 
-    @ExceptionHandler(SendEmailFailErrorException.class)
-    public ResponseEntity<Object> handleSendEmailFailException(final SignatureException e, final HttpServletRequest httpServletRequest) {
-        ResultCode resultCode = ResultCode.SEND_EMAIL_FAIL;
+    @ExceptionHandler(SendMsgFailErrorException.class)
+    public ResponseEntity<Object> handleSendMsgFailException(final SignatureException e, final HttpServletRequest httpServletRequest) {
+        ResultCode resultCode = ResultCode.SEND_MSG_FAIL;
         ErrorResponse response = ErrorResponse.of(resultCode, httpServletRequest.getRequestURI());
         return new ResponseEntity<>(response, resultCode.getHttpStatus());
     }

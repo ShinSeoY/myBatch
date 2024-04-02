@@ -1,13 +1,15 @@
 package com.my.batch.service;
 
-import com.my.batch.common.utils.CoolsmsUtils;
-import com.my.batch.common.utils.SmtpUtils;
 import com.my.batch.constant.CalcType;
+import com.my.batch.constant.SendType;
+import com.my.batch.domain.Message;
 import com.my.batch.domain.Notification;
-import com.my.batch.dto.smtp.request.SendEmailRequestDto;
+import com.my.batch.dto.common.msg.EmailEvent;
+import com.my.batch.dto.common.msg.SmsEvent;
 import com.my.batch.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,8 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NotificationService {
     private final NotificationRepository notificationRepository;
-    private final CoolsmsUtils coolsmsUtils;
-    private final SmtpUtils smtpUtils;
+    private final ApplicationEventPublisher publisher;
 
     public List<Notification> validPeriod() {
         List<Notification> notificationsForMsg = new ArrayList<>();
@@ -47,34 +48,32 @@ public class NotificationService {
             if (res == 0 || it.getCalcType().equals(CalcType.LTE) ? res > 0 : res < 0) {
                 isReachedStatus = true;
             }
-            if (isReachedStatus && it.isEmailEnabled()) {
-                sendEmail(it);
-                it.setEnabled(false);
+            if (isReachedStatus) {
+                String text = getText(it);
+                Message message = Message.builder()
+                        .memberId(it.getMember().getId())
+                        .email(it.getMember().getEmail())
+                        .phone(it.getMember().getPhone())
+                        .content(text)
+                        .sendStatus(SendType.SENDING)
+                        .build();
+
+                if (it.isEmailEnabled()) {
+                    publisher.publishEvent(new EmailEvent(it, message));
+//                    sendEmail(it, message);
+                    it.setEnabled(false);
+                }
+                if (it.isSmsEnabled()) {
+                    publisher.publishEvent(new SmsEvent(it, message));
+//                    sendSms(it, message);
+                    it.setEnabled(false);
+                }
+                notificationRepository.save(it);
             }
-            if (isReachedStatus && it.isSmsEnabled()) {
-                sendSms(it);
-                it.setEnabled(false);
-            }
-            notificationRepository.save(it);
         });
     }
 
-    private void sendEmail(Notification notification) {
-        SendEmailRequestDto sendEmailRequestDto = SendEmailRequestDto.builder()
-                .address(notification.getMember().getEmail())
-                .title("오늘의 환율 알림 서비스")
-                .content(getText(notification))
-                .build();
-        smtpUtils.sendEmail(sendEmailRequestDto);
-    }
-
-    private void sendSms(Notification notification) {
-        String to = notification.getMember().getPhone();
-
-        coolsmsUtils.sendSms(to, getText(notification));
-    }
-
-    private String getText(Notification notification) {
+    public String getText(Notification notification) {
         return "예약 환율 알림 \n" +
                 notification.getExchange().getName() + "(" + notification.getExchange().getUnit() + ") 매매 기준율 : " + notification.getExchange().getExchangeRate() + " " + notification.getExchange().getKrUnit();
     }

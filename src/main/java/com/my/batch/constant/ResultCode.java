@@ -21,7 +21,7 @@ public enum ResultCode {
     PARSE_ERROR("E009", "json-parsing-error", HttpStatus.BAD_REQUEST),
     EXCEEDED_MAXIMUM_REQUESTS("E010", "exceeded-maximum-requests(1000)", HttpStatus.INTERNAL_SERVER_ERROR),
     UNDEFINED_REQUEST_API("E011", "undefined-request-api", HttpStatus.INTERNAL_SERVER_ERROR),
-    SEND_EMAIL_FAIL("E012", "send-email-fail", HttpStatus.INTERNAL_SERVER_ERROR),
+    SEND_MSG_FAIL("E012", "send-email-fail", HttpStatus.INTERNAL_SERVER_ERROR),
     UNCAUGHT("E999", "system-error", HttpStatus.INTERNAL_SERVER_ERROR);
 
     private final String code;
