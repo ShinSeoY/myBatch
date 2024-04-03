@@ -29,8 +29,6 @@ public class EventListenerHandler {
 //    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMPLETION)
     @EventListener
     public void sendEmail(EmailEvent emailEvent) {
-        log.info("---------------------sendEmail....{}", emailEvent.getNotification().getMember().getId());
-
         try {
             SendEmailRequestDto sendEmailRequestDto = SendEmailRequestDto.builder()
                     .address(emailEvent.getNotification().getMember().getEmail())
@@ -58,7 +56,6 @@ public class EventListenerHandler {
 //    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMPLETION)
     @EventListener
     public void sendSms(SmsEvent smsEvent) {
-        log.info("---------------------sendSms....{}", smsEvent.getNotification().getMember().getId());
         try {
             String to = smsEvent.getNotification().getMember().getPhone();
 //            coolsmsUtils.sendSms(to, smsEvent.getMessage().getContent());

@@ -50,27 +50,30 @@ public class NotificationService {
             }
             if (isReachedStatus) {
                 String text = getText(it);
-                Message message = Message.builder()
-                        .memberId(it.getMember().getId())
-                        .email(it.getMember().getEmail())
-                        .phone(it.getMember().getPhone())
-                        .content(text)
-                        .sendStatus(SendType.SENDING)
-                        .build();
+                Message emailMessage = buildMessage(it, text);
+                Message smsMessage = buildMessage(it, text);
 
                 if (it.isEmailEnabled()) {
-                    publisher.publishEvent(new EmailEvent(it, message));
-//                    sendEmail(it, message);
+                    publisher.publishEvent(new EmailEvent(it, emailMessage));
                     it.setEnabled(false);
                 }
                 if (it.isSmsEnabled()) {
-                    publisher.publishEvent(new SmsEvent(it, message));
-//                    sendSms(it, message);
+                    publisher.publishEvent(new SmsEvent(it, smsMessage));
                     it.setEnabled(false);
                 }
                 notificationRepository.save(it);
             }
         });
+    }
+
+    private Message buildMessage(Notification notification, String text) {
+        return Message.builder()
+                .memberId(notification.getMember().getId())
+                .email(notification.getMember().getEmail())
+                .phone(notification.getMember().getPhone())
+                .content(text)
+                .sendStatus(SendType.SENDING)
+                .build();
     }
 
     public String getText(Notification notification) {
