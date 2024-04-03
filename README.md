@@ -39,3 +39,4 @@ Docker-compose <br/>
 > - application.yml 파일은 secret key 및 db 정보 등을 담고 있어 .gitignore 에 추가함
 > - daily batch 실행 중 StepExecutionListener 를 통해 Execution 및 Error를 파악하여 batch_status 테이블에 결과 값 저장
 > - Job 수동 실행을 위한 JobLauncherController Junit test 적용
+> - EventListener를 사용하여 mail, sms 전송서비스 async 처리 
