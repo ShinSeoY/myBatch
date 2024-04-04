@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 @Setter
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "massage")
+@ToString
 public class Message {
 
     @Id

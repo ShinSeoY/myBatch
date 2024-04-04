@@ -25,8 +25,6 @@ public class EventListenerHandler {
     private final SmtpUtils smtpUtils;
 
     @Async
-//    @Transactional(value = Transactional.TxType.REQUIRES_NEW)
-//    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMPLETION)
     @EventListener
     public void sendEmail(EmailEvent emailEvent) {
         try {
@@ -52,8 +50,6 @@ public class EventListenerHandler {
     }
 
     @Async
-//    @Transactional(value = Transactional.TxType.REQUIRES_NEW)
-//    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMPLETION)
     @EventListener
     public void sendSms(SmsEvent smsEvent) {
         try {
