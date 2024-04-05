@@ -33,7 +33,7 @@ public class EventListenerHandler {
                     .title("오늘의 환율 알림 서비스")
                     .content(emailEvent.getMessage().getContent())
                     .build();
-//            smtpUtils.sendEmail(sendEmailRequestDto);
+            smtpUtils.sendEmail(sendEmailRequestDto);
 
             emailEvent.getMessage().setMsgType(MsgType.EMAIL);
             emailEvent.getMessage().setSendResult(SendType.SEND_SUCCESS);
@@ -53,8 +53,8 @@ public class EventListenerHandler {
     @EventListener
     public void sendSms(SmsEvent smsEvent) {
         try {
-            String to = smsEvent.getNotification().getMember().getPhone();
-//            coolsmsUtils.sendSms(to, smsEvent.getMessage().getContent());
+            String to = smsEvent.getNotification().getMember().getPlainPhone();
+            coolsmsUtils.sendSms(to, smsEvent.getMessage().getContent());
 
             smsEvent.getMessage().setMsgType(MsgType.SMS);
             smsEvent.getMessage().setSendResult(SendType.SEND_SUCCESS);

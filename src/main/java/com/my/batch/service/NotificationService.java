@@ -1,5 +1,6 @@
 package com.my.batch.service;
 
+import com.my.batch.common.utils.CryptoDbUtil;
 import com.my.batch.constant.CalcType;
 import com.my.batch.constant.SendType;
 import com.my.batch.domain.Message;
@@ -22,6 +23,7 @@ import java.util.List;
 public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final ApplicationEventPublisher publisher;
+    private final CryptoDbUtil cryptoDbUtil;
 
     public List<Notification> validPeriod() {
         List<Notification> notificationsForMsg = new ArrayList<>();
@@ -58,7 +60,7 @@ public class NotificationService {
                     it.setEnabled(false);
                 }
                 if (it.isSmsEnabled()) {
-                    publisher.publishEvent(new SmsEvent(it, smsMessage));
+                    publisher.publishEvent(new SmsEvent(cryptoDbUtil, it, smsMessage));
                     it.setEnabled(false);
                 }
                 notificationRepository.save(it);
