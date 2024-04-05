@@ -32,7 +32,7 @@ public class MemberController {
      * @apiNote 회원가입
      */
     @PostMapping("/signup")
-    public ResponseEntity saveMember(@RequestBody MemberRequestDto memberRequestDto) {
+    public ResponseEntity saveMember(@RequestBody MemberRequestDto memberRequestDto) throws Exception {
         memberService.saveMember(memberRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }

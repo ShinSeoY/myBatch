@@ -1,6 +1,7 @@
 package com.my.batch.service;
 
 import com.my.batch.common.security.AuthenticationTokenProvider;
+import com.my.batch.common.utils.CryptoDbUtil;
 import com.my.batch.constant.CalcType;
 import com.my.batch.constant.ResultCode;
 import com.my.batch.domain.*;
@@ -18,7 +19,6 @@ import com.my.batch.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,18 +35,18 @@ public class MemberService {
     private final ExchangeRepository exchangeRepository;
     private final NotificationRepository notificationRepository;
 
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final CryptoDbUtil cryptoDbUtil;
     private final AuthenticationTokenProvider authenticationTokenProvider;
 
     private final String EMAIL = "email";
     private final String SMS = "sms";
 
 
-    public void saveMember(MemberRequestDto memberRequestDto) {
+    public void saveMember(MemberRequestDto memberRequestDto) throws Exception {
         memberRepository.save(
                 Member.builder()
                         .email(memberRequestDto.getEmail())
-                        .phone(bCryptPasswordEncoder.encode(memberRequestDto.getPhone()))
+                        .phone(cryptoDbUtil.encrypt(memberRequestDto.getPhone()))
                         .build()
         );
     }
@@ -55,7 +55,7 @@ public class MemberService {
         try {
             Optional<Member> found = memberRepository.findByEmail(memberRequestDto.getEmail());
             Member member = found.orElseThrow(() -> new NotFoundUserException());
-            if (bCryptPasswordEncoder.matches(memberRequestDto.getPhone(), member.getPhone())) {
+            if (isMatch(memberRequestDto.getPhone(), member.getPhone())) {
                 return LoginResponseDto.builder()
                         .jwtToken(authenticationTokenProvider.generateJwtToken(member))
                         .code(ResultCode.SUCCESS.getCode())
@@ -67,6 +67,15 @@ public class MemberService {
             return LoginResponseDto.builder()
                     .code(ResultCode.NOT_FOUND_USER.getCode())
                     .build();
+        }
+    }
+
+    private boolean isMatch(String incomeText, String originText) {
+        try {
+            return incomeText.equals(cryptoDbUtil.decrypt(originText));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
