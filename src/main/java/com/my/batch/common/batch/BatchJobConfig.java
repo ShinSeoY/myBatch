@@ -2,9 +2,11 @@ package com.my.batch.common.batch;
 
 import com.my.batch.common.utils.ExchangeUtils;
 import com.my.batch.domain.BatchStatus;
+import com.my.batch.domain.Notification;
 import com.my.batch.dto.exchange.response.ExchangeWebApiResponseDto;
 import com.my.batch.repository.BatchStatusRepository;
 import com.my.batch.service.ExchangeService;
+import com.my.batch.service.NotificationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -30,6 +32,7 @@ public class BatchJobConfig {
     private final ExchangeUtils exchangeUtils;
     private final ExchangeService exchangeService;
     private final BatchStatusRepository batchStatusRepository;
+    private final NotificationService notificationService;
     private final String EXCHANGE_JOB_NAME = "exchangeSaveJob";
     private final String EXCHANGE_LAST_STEP_NAME = "exchangeSaveStep";
     private final String SUCCESS_EXIT_STATUS = "COMPLETED";
@@ -40,9 +43,6 @@ public class BatchJobConfig {
 
     @Bean
     public Job notificationJob(JobRepository jobRepository, Step validPeriodStep, Step sendMsgStep) {
-        // notification 테이블 update => updatedAt 3개월 이상일 경우 is_enabled = false
-        // notification 테이블 Find => select memberId, emailEnabled, smsEnabled, calcType, goalExchangeRate, unit where is_enabled == true
-        // SENDING email, SMS
         return new JobBuilder(NOTIFICATION_JOB_NAME, jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .start(validPeriodStep)
@@ -99,8 +99,11 @@ public class BatchJobConfig {
     public Step validPeriodStep(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager, StepExecutionListener notificationStepExecutionListener) {
         return new StepBuilder("validPeriodStep", jobRepository)
                 .tasklet(((contribution, chunkContext) -> {
+                    List<Notification> result = notificationService.validPeriod();
 
                     contribution.setExitStatus(ExitStatus.COMPLETED);
+                    chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext().put("result", result);
+
                     return RepeatStatus.FINISHED;
                 }), platformTransactionManager)
                 .listener(notificationStepExecutionListener)
@@ -111,8 +114,11 @@ public class BatchJobConfig {
     public Step sendMsgStep(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager, StepExecutionListener notificationStepExecutionListener) {
         return new StepBuilder("sendMsgStep", jobRepository)
                 .tasklet(((contribution, chunkContext) -> {
+                    List<Notification> result = (List<Notification>) chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext().get("result");
+                    notificationService.sendMsg(result);
 
                     contribution.setExitStatus(ExitStatus.COMPLETED);
+
                     return RepeatStatus.FINISHED;
                 }), platformTransactionManager)
                 .listener(notificationStepExecutionListener)
