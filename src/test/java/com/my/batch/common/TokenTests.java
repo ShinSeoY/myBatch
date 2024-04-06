@@ -22,7 +22,7 @@ class TokenTests {
     void generateJwtToken() {
 
         // Given
-        String email = "a";
+        String email = "shsy312@gmail.com";
         Member member = memberRepository.findByEmail(email).orElseThrow();
 
         // When
