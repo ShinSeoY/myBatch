@@ -3,11 +3,13 @@ package com.my.batch.service;
 import com.my.batch.common.utils.ExchangeUtils;
 import com.my.batch.constant.ResultCode;
 import com.my.batch.domain.Exchange;
+import com.my.batch.dto.common.PageBaseDto;
 import com.my.batch.dto.exchange.response.ExchangeListResponseDto;
 import com.my.batch.dto.exchange.response.ExchangeWebApiResponseDto;
 import com.my.batch.repository.ExchangeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +23,16 @@ public class ExchangeService {
     private final ExchangeRepository exchangeRepository;
     private final ExchangeUtils exchangeUtils;
 
-    public ExchangeListResponseDto findExchangeList() {
-        List<Exchange> exchanges = exchangeRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
+    public ExchangeListResponseDto findExchangeList(PageBaseDto pageBaseDto) {
+        List<Exchange> exchanges;
+        Sort sort = Sort.by(Sort.Direction.ASC, "name");
+
+        if (pageBaseDto != null) {
+            PageRequest pageRequest = PageRequest.of(pageBaseDto.getCurrentPage(), pageBaseDto.getPerPage(), sort);
+            exchanges = exchangeRepository.findAll(pageRequest).stream().toList();
+        } else {
+            exchanges = exchangeRepository.findAll(sort);
+        }
         return exchanges.size() > 0 ?
                 ExchangeListResponseDto.builder()
                         .code(ResultCode.SUCCESS.getCode())
