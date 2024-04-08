@@ -28,4 +28,9 @@ public class ExchangeController {
         return new ResponseEntity<>(exchangeService.findExchangeList(pageBaseDto), HttpStatus.OK);
     }
 
+    @GetMapping("/count")
+    public ResponseEntity findExchangeListCount(@LoginUser Member member) {
+        return new ResponseEntity<>(exchangeService.findExchangeListCount(), HttpStatus.OK);
+    }
+
 }

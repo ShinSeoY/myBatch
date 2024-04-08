@@ -56,6 +56,10 @@ public class ExchangeService {
                 .build();
     }
 
+    public long findExchangeListCount(){
+        return exchangeRepository.count();
+    }
+
     public void saveExchangeList(List<ExchangeWebApiResponseDto> exchangeWebApiResponseDtoList) {
         for (ExchangeWebApiResponseDto dto : exchangeWebApiResponseDtoList) {
             exchangeRepository.save(ExchangeWebApiResponseDto.toExchange(dto));
