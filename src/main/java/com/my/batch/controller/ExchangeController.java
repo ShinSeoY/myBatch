@@ -29,7 +29,7 @@ public class ExchangeController {
     }
 
     @GetMapping("/count")
-    public ResponseEntity findExchangeListCount(@LoginUser Member member) {
+    public ResponseEntity<Integer> findExchangeListCount(@LoginUser Member member) {
         return new ResponseEntity<>(exchangeService.findExchangeListCount(), HttpStatus.OK);
     }
 

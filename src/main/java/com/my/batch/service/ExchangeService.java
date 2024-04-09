@@ -56,8 +56,8 @@ public class ExchangeService {
                 .build();
     }
 
-    public long findExchangeListCount(){
-        return exchangeRepository.count();
+    public Integer findExchangeListCount(){
+        return Math.toIntExact(exchangeRepository.count());
     }
 
     public void saveExchangeList(List<ExchangeWebApiResponseDto> exchangeWebApiResponseDtoList) {
