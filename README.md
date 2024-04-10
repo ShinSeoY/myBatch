@@ -28,13 +28,14 @@ Docker-compose <br/>
 <br/>
 
 ## 적용 서비스
-#### 오늘의 환율 정보 Scheduler Batch
-<img width="588" alt="image" src="https://github.com/ShinSeoY/myBatch/assets/63282412/44224c55-ebfc-44dc-aa02-c514c3888356">
+#### 오늘의 환율 정보 Scheduler Batch Diagram
+<img width="588" alt="image" src="https://github.com/ShinSeoY/myBatch/blob/main/img/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-04-10%20%EC%98%A4%ED%9B%84%203.40.31.png">
 
-#### 환율 알림 섭비스 Scheduler Batch
-
+#### 환율 알림 섭비스 Scheduler Batch Diagram
+<img width="588" alt="image" src="https://github.com/ShinSeoY/myBatch/blob/main/img/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-04-10%20%EC%98%A4%ED%9B%84%203.40.23.png">
 
 #### DB ERD
+<img width="588" alt="image" src="https://github.com/ShinSeoY/myBatch/blob/main/img/erd.png">
 
 ## 특이 사항
 > - application.yml 파일은 secret key 및 db 정보 등을 담고 있어 .gitignore 에 추가함
