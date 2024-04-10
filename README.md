@@ -31,7 +31,7 @@ Docker-compose <br/>
 #### 오늘의 환율 정보 Scheduler Batch flow chart
 <img width="588" alt="image" src="https://github.com/ShinSeoY/myBatch/blob/main/img/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-04-10%20%EC%98%A4%ED%9B%84%203.40.31.png">
 
-#### 환율 알림 섭비스 Scheduler Batch flow chart
+#### 환율 알림 서비스 Scheduler Batch flow chart
 <img width="588" alt="image" src="https://github.com/ShinSeoY/myBatch/blob/main/img/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202024-04-10%20%EC%98%A4%ED%9B%84%203.40.23.png">
 
 #### DB ERD Diagram
