@@ -28,7 +28,7 @@ public class ExchangeService {
         Sort sort = Sort.by(Sort.Direction.ASC, "name");
 
         if (pageBaseDto != null) {
-            PageRequest pageRequest = PageRequest.of(pageBaseDto.getCurrentPage(), pageBaseDto.getPerPage(), sort);
+            PageRequest pageRequest = PageRequest.of(pageBaseDto.getCurrentPage() - 1, pageBaseDto.getPerPage(), sort);
             exchanges = exchangeRepository.findAll(pageRequest).stream().toList();
         } else {
             exchanges = exchangeRepository.findAll(sort);
@@ -56,7 +56,7 @@ public class ExchangeService {
                 .build();
     }
 
-    public Integer findExchangeListCount(){
+    public Integer findExchangeListCount() {
         return Math.toIntExact(exchangeRepository.count());
     }
 
