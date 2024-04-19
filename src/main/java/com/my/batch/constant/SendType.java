@@ -9,7 +9,7 @@ import lombok.Getter;
 public enum SendType {
 
     SENDING("sending"),
-    WAIT("wait"),
+//    COMPLETED("completed"),
     FAILED("failed"),
 
     SEND_SUCCESS("send-success"),
