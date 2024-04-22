@@ -6,11 +6,12 @@
 ## 사용 스택
 JAVA 17 <br/>
 Spring boot 3 <br/>
-MariaDB <br/>
+MySQL <br/>
 JPA <br/>
 JUnit <br/>
 Spring boot Batch <br/>
 Spring boot Scheduler <br/>
+AWS RDS <br/>
 Docker <br/>
 Docker-compose <br/>
 <br/>
