@@ -11,7 +11,7 @@ JPA <br/>
 JUnit <br/>
 Spring boot Batch <br/>
 Spring boot Scheduler <br/>
-AWS RDS <br/>
+AWS RDS <br/>
 Docker <br/>
 Docker-compose <br/>
 <br/>
