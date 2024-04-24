@@ -26,4 +26,5 @@ ENV PROFILE="dev"
 
 # 컨테이너가 시작될 때 실행되는 명령어를 지정
 # 여기서는 Spring Boot 애플리케이션을 JAR 파일로 실행 & 활성화된 프로파일을 'dev'로 설정
+#ENTRYPOINT ["java","-jar","--spring.profiles.active=$PROFILE","/app/app.jar"]
 ENTRYPOINT java -jar app.jar --spring.profiles.active=$PROFILE
