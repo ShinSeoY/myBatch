@@ -25,7 +25,7 @@ services:
       context: ../myBatch-front
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "3001:80"
     container_name: my-exchange-client
     restart: always
     networks:
