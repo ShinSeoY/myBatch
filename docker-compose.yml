@@ -20,31 +20,34 @@ services:
 #      - "--collation-server=utf8mb4_unicode_ci"
 #    networks:
 #      - test_network
+  spring:
+    container_name: my-exchange
+    restart: always
+    build: # build 속성을 통해 docker build -t 컨테이너명 . 명령어가 수행됨
+      context: ./ #dockerfile이 있는 위치
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    #    environment:
+    #      SPRING_DATASOURCE_URL: jdbc:mysql://my-exchange.cpa8g4o0appv.eu-north-1.rds.amazonaws.com:3306/MY_EXCHANGE?serverTimezone=UTC&characterEncoding=UTF-8
+    #      SPRING_DATASOURCE_USERNAME: "admin"
+    #      SPRING_DATASOURCE_PASSWORD: "nextage2020!"
+    #    depends_on:
+    #      - database
+    networks:
+      - my_exchange_network
+
   vue:
     build:
       context: ../myBatch-front
       dockerfile: Dockerfile
     ports:
-      - "3001:80"
+      - "3002:80"
+      - "80:80"
     container_name: my-exchange-client
     restart: always
-    networks:
-      - my_exchange_network
-
-  spring:
-    container_name: my-exchange
-    restart: always
-    build:  # build 속성을 통해 docker build -t 컨테이너명 . 명령어가 수행됨
-      context: ./ #dockerfile이 있는 위치
-      dockerfile: Dockerfile
-    ports:
-      - "8080:8080"
-#    environment:
-#      SPRING_DATASOURCE_URL: jdbc:mysql://my-exchange.cpa8g4o0appv.eu-north-1.rds.amazonaws.com:3306/MY_EXCHANGE?serverTimezone=UTC&characterEncoding=UTF-8
-#      SPRING_DATASOURCE_USERNAME: "admin"
-#      SPRING_DATASOURCE_PASSWORD: "nextage2020!"
-#    depends_on:
-#      - database
+    depends_on:
+      - spring
     networks:
       - my_exchange_network
 
