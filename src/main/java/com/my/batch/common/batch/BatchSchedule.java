@@ -36,7 +36,7 @@ public class BatchSchedule {
         }
     }
 
-    @Scheduled(cron = "0 0-8 * * *") //매일 오전9-오후5시까지 한시간마다 한번씩 실행
+    @Scheduled(cron = "0 0 0-8 * * *") //매일 오전9-오후5시까지 한시간마다 한번씩 실행
     public void runNotificationJob() {
         JobParameters parameters = new JobParametersBuilder().addString("time", LocalDateTime.now().toString()).toJobParameters();
         try {
