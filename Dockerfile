@@ -15,10 +15,10 @@ RUN ./gradlew clean bootJar
 
 # jar 파일 실행
 # OpenJDK 17를 기반으로 하는 이미지를 사용
-FROM openjdk:17-jdk-slim
-
-# 작업 디렉토리를 '/app'으로 설정
-WORKDIR /app
+#FROM openjdk:17-jdk-slim
+#
+## 작업 디렉토리를 '/app'으로 설정
+#WORKDIR /app
 # 이전 빌드 단계에서 생성된 JAR 파일을 현재 작업 디렉토리로 복사
 COPY --from=builder /app/build/libs/batch-*.jar app.jar
 # 환경 변수 'PROFILE'을 'dev'로 설정
