@@ -8,8 +8,8 @@ spring:
     default-encoding: UTF-8
     host: smtp.gmail.com
     port: 587
-    username: "tjdudtls312@gmail.com"
-    password: "bhmm acgf jfjl wytp"
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         mime:
@@ -38,24 +38,25 @@ spring:
 
 security:
   jwt:
-    key-value: "2AA4B45D5FB9FF29B722A57E3E9FAAF4F2DC33326953338C5F9B92783E"
-  crypto-db-iv: "6f6054ca43f8be35422c49a27b2d4f1a" # 256 bit
-  crypto-db-key: "G9lvXognJXioLzF36d4cOZxbtbbLW6Jl" # 256 bit
+    key-value: ${SECURITY_JWT_KEY}
+  crypto-db-iv: ${SECURITY_CRYPTO_IV} # 256 bit
+  crypto-db-key: ${SECURITY_CRYPTO_KEY} # 256 bit
 
 
 # Exchange Rate API
 exchange:
   host: "www.koreaexim.go.kr"
   path: "site/program/financial/exchangeJSON"
-  authkey: "x4aRpxsOtaWnsG2EipVpwkSJZsS4vrGs"
+  authkey: ${EXCHANGE_AUTHKEY}
   type: "AP01"
 
 coolsms:
-  sender: "01079990497"
+  sender: ${SMS_SENDER}
   provider: https://api.coolsms.co.kr
   api:
-    key: "NCSVQAERJWAZNLOU"
-    secret: "MDMCIKAYBBHACAFOGVXZTLKAPRCOMRRS"
+    key: ${SMS_API_KEY}
+    secret: ${SMS_API_SECRET}
+
 ---
 # local env
 spring.config.activate.on-profile: local-envs
@@ -69,9 +70,9 @@ spring.config.activate.on-profile: local-db
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: "jdbc:mysql://127.0.0.1:3306/MY_EXCHANGE?serverTimezone=UTC&characterEncoding=UTF-8"
-    username: "root"
-    password: "nextage2020!"
+    url: ${LOC_DATASOURCE_URL}
+    username: ${LOC_DATASOURCE_USERNAME}
+    password: ${LOC_DATASOURCE_PASSWORD}
 
 ---
 # dev env
@@ -87,11 +88,8 @@ spring.config.activate.on-profile: dev-db
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: "jdbc:mysql://my-exchange.cpa8g4o0appv.eu-north-1.rds.amazonaws.com:3306/MY_EXCHANGE?serverTimezone=UTC&characterEncoding=UTF-8"
-    username: "admin"
-    password: "nextage2020!"
-#    url: ${SPRING_DATASOURCE_URL}
-#    username: ${SPRING_DATASOURCE_USERNAME}
-#    password: ${SPRING_DATASOURCE_PASSWORD}
+    url: ${DEV_DATASOURCE_URL}
+    username: ${DEV_DATASOURCE_USERNAME}
+    password: ${DEV_DATASOURCE_PASSWORD}
 
 
