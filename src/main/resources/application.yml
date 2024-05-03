@@ -1,0 +1,97 @@
+spring:
+  batch:
+    job:
+      enabled: false
+    jdbc:
+      initialize-schema: always
+  mail:
+    default-encoding: UTF-8
+    host: smtp.gmail.com
+    port: 587
+    username: "tjdudtls312@gmail.com"
+    password: "bhmm acgf jfjl wytp"
+    properties:
+      mail:
+        mime:
+          charset: UTF-8
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  mvc:
+    dispatch-options-request: false
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    naming:
+      physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+    database: mysql
+  profiles:
+    group:
+      local: "local-envs,local-db"
+      dev: "dev-envs, dev-db"
+      production: ""
+    active: dev
+
+security:
+  jwt:
+    key-value: "2AA4B45D5FB9FF29B722A57E3E9FAAF4F2DC33326953338C5F9B92783E"
+  crypto-db-iv: "6f6054ca43f8be35422c49a27b2d4f1a" # 256 bit
+  crypto-db-key: "G9lvXognJXioLzF36d4cOZxbtbbLW6Jl" # 256 bit
+
+
+# Exchange Rate API
+exchange:
+  host: "www.koreaexim.go.kr"
+  path: "site/program/financial/exchangeJSON"
+  authkey: "x4aRpxsOtaWnsG2EipVpwkSJZsS4vrGs"
+  type: "AP01"
+
+coolsms:
+  sender: "01079990497"
+  provider: https://api.coolsms.co.kr
+  api:
+    key: "NCSVQAERJWAZNLOU"
+    secret: "MDMCIKAYBBHACAFOGVXZTLKAPRCOMRRS"
+---
+# local env
+spring.config.activate.on-profile: local-envs
+server:
+  port: 8080
+
+---
+# local db
+spring.config.activate.on-profile: local-db
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: "jdbc:mysql://127.0.0.1:3306/MY_EXCHANGE?serverTimezone=UTC&characterEncoding=UTF-8"
+    username: "root"
+    password: "nextage2020!"
+
+---
+# dev env
+spring.config.activate.on-profile: dev-envs
+server:
+  port: 8082
+
+---
+
+# dev db
+spring.config.activate.on-profile: dev-db
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: "jdbc:mysql://my-exchange.cpa8g4o0appv.eu-north-1.rds.amazonaws.com:3306/MY_EXCHANGE?serverTimezone=UTC&characterEncoding=UTF-8"
+    username: "admin"
+    password: "nextage2020!"
+#    url: ${SPRING_DATASOURCE_URL}
+#    username: ${SPRING_DATASOURCE_USERNAME}
+#    password: ${SPRING_DATASOURCE_PASSWORD}
+
+
