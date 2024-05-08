@@ -23,7 +23,7 @@ public class BatchSchedule {
     private final Job exchangeSaveJob;
     private final Job notificationJob;
 
-    @Scheduled(cron = "0 0 2 * * *") //매일 아침 11시 0분 0초에 실행
+    @Scheduled(cron = "0 1 11 * * *") //매일 아침 11시 0분 0초에 실행
     public void runExchangeSaveJob() {
         // 동일 job을 계속 실행하게 하기 위해 파라미터 설정
         JobParameters parameters = new JobParametersBuilder().addString("time", LocalDateTime.now().toString()).toJobParameters();
@@ -36,7 +36,7 @@ public class BatchSchedule {
         }
     }
 
-    @Scheduled(cron = "0 0 0-8 * * *") //매일 오전9-오후5시까지 한시간마다 한번씩 실행
+    @Scheduled(cron = "0 0 9-17 * * *") //매일 오전9-오후5시까지 한시간마다 한번씩 실행
     public void runNotificationJob() {
         JobParameters parameters = new JobParametersBuilder().addString("time", LocalDateTime.now().toString()).toJobParameters();
         try {
