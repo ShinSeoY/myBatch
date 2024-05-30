@@ -25,7 +25,7 @@
 # ----------- jeknins사용안할때 여기부분 주석처리하고 위에 부분 주석 해제하고 사용 -------------
 FROM openjdk:17-jdk-slim
 WORKDIR /app
-COPY /var/jenkins_home/workspace/myBatch/build/libs/batch-*.jar app.jar
+COPY build/libs/batch-*.jar app.jar
 # ------------------------------------------------------------------------------
 
 # 환경 변수 'PROFILE'을 'dev'로 설정
