@@ -35,7 +35,5 @@ ENV PROFILE="dev"
 # 여기서는 Spring Boot 애플리케이션을 JAR 파일로 실행 & 활성화된 프로파일을 'dev'로 설정
 #ENTRYPOINT ["java","-jar","--spring.profiles.active=$PROFILE","/app/app.jar"]
 ENTRYPOINT java -jar app.jar --spring.profiles.active=$PROFILE
-# 쉘을 사용해서 명령 실행 PROFILE 환경변수 인식 잘 되도록 도와줌
-#ENTRYPOINT ["sh", "-c", "java -jar app.jar --spring.profiles.active=$PROFILE"]
 
 EXPOSE 8082
