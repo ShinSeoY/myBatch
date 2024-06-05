@@ -27,7 +27,12 @@ public class SecurityConfig {
         http.httpBasic((request) -> request.disable())
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests((requests) -> requests.anyRequest().permitAll())
+                .authorizeHttpRequests((requests) -> requests
+                        .requestMatchers("/api/member/signup").permitAll()
+                        .requestMatchers("/api/member/login").permitAll()
+                        .requestMatchers("/api/member/check-email/*").permitAll()
+                        .anyRequest()
+                        .authenticated())
                 .sessionManagement((requests) -> requests.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(new AuthenticationTokenFilter(authenticationTokenProvider, myUserDetailsService), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling((exceptionConfig) ->
@@ -41,9 +46,9 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/api/member/login", "/api/member/signup");
-    }
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        return (web) -> web.ignoring().requestMatchers("/api/member/login", "/api/member/signup", "/job/test");
+//    }
 
 }
