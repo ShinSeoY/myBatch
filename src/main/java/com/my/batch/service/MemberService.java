@@ -8,6 +8,7 @@ import com.my.batch.domain.*;
 import com.my.batch.dto.common.BaseResultDto;
 import com.my.batch.dto.member.request.MemberRequestDto;
 import com.my.batch.dto.member.request.NotificationRequestDto;
+import com.my.batch.dto.member.response.CheckEmailResponseDto;
 import com.my.batch.dto.member.response.LoginResponseDto;
 import com.my.batch.dto.member.response.MemberFavListResponseDto;
 import com.my.batch.dto.member.response.NotificationResponseDto;
@@ -77,6 +78,14 @@ public class MemberService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public CheckEmailResponseDto checkEmail(String email) {
+        Integer count = memberRepository.countByEmail(email);
+        return CheckEmailResponseDto.builder()
+                .code(ResultCode.SUCCESS.getCode())
+                .isDuplicate(email == null || count == null || count > 0)
+                .build();
     }
 
     public MemberFavListResponseDto getMemberFavList(Member member) {

@@ -6,6 +6,7 @@ import com.my.batch.domain.Member;
 import com.my.batch.dto.common.BaseResultDto;
 import com.my.batch.dto.member.request.MemberRequestDto;
 import com.my.batch.dto.member.request.NotificationRequestDto;
+import com.my.batch.dto.member.response.CheckEmailResponseDto;
 import com.my.batch.dto.member.response.LoginResponseDto;
 import com.my.batch.dto.member.response.MemberFavListResponseDto;
 import com.my.batch.dto.member.response.NotificationResponseDto;
@@ -53,6 +54,15 @@ public class MemberController {
     @PostMapping("/verify-token")
     public ResponseEntity<Boolean> login(@RequestBody String token) {
         return new ResponseEntity<>(authenticationTokenProvider.verifyToken(token), HttpStatus.OK);
+    }
+
+    /**
+     * @param email
+     * @apiNote 이메일 중복 체크
+     */
+    @GetMapping("/check-email/{email}")
+    public ResponseEntity<CheckEmailResponseDto> checkEmail(@PathVariable String email) {
+        return new ResponseEntity<>(memberService.checkEmail(email), HttpStatus.OK);
     }
 
     /**

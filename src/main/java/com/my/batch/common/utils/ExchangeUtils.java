@@ -38,7 +38,6 @@ public class ExchangeUtils {
 
     RestClient restClient = RestClient.create();
 
-
     public List<ExchangeWebApiResponseDto> getExchangeDataAsDtoList(String date) {
         JsonNode jsonNode = getExchangeDataSync(date);
 
@@ -70,12 +69,6 @@ public class ExchangeUtils {
     }
 
     private JsonNode getExchangeDataSync(String date) {
-
-//        DefaultUriBuilderFactory 객체를 생성하여 인코딩 모드를 None으로 변경하고 이를 아래와 같이 WebClient에 적용했습니다.
-//        queryParam을 사용할 때, API를 WebClient로 호출하기 위해서 인코딩을 하지 않도록 처리하였습니다.
-        DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory();
-        factory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.NONE);
-
         ResponseEntity<String> map = restClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .scheme("https")
