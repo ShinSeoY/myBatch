@@ -115,7 +115,7 @@ public class BatchJobConfig {
         return new StepBuilder("sendMsgStep", jobRepository)
                 .tasklet(((contribution, chunkContext) -> {
                     List<Notification> result = (List<Notification>) chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext().get("result");
-                    notificationService.sendMsg(result);
+                    notificationService.sendNotificationMsg(result);
 
                     contribution.setExitStatus(ExitStatus.COMPLETED);
 

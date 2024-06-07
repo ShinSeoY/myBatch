@@ -18,16 +18,29 @@ public class ExchangeController {
 
     private final ExchangeService exchangeService;
 
+    /**
+     * @param member
+     * @apiNote 환율 리스트
+     */
     @GetMapping("")
     public ResponseEntity findExchangeList(@LoginUser Member member) {
         return new ResponseEntity<>(exchangeService.findExchangeList(null), HttpStatus.OK);
     }
 
+    /**
+     * @param member
+     * @param pageBaseDto
+     * @apiNote 환율 리스트 With 페이지네이션
+     */
     @PostMapping("")
     public ResponseEntity findExchangeListWithPagination(@LoginUser Member member, @RequestBody PageBaseDto pageBaseDto) {
         return new ResponseEntity<>(exchangeService.findExchangeList(pageBaseDto), HttpStatus.OK);
     }
 
+    /**
+     * @param member
+     * @apiNote 환율 리스트 전체 수
+     */
     @GetMapping("/count")
     public ResponseEntity<Integer> findExchangeListCount(@LoginUser Member member) {
         return new ResponseEntity<>(exchangeService.findExchangeListCount(), HttpStatus.OK);

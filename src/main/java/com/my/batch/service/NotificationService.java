@@ -2,6 +2,7 @@ package com.my.batch.service;
 
 import com.my.batch.common.utils.CryptoDbUtil;
 import com.my.batch.constant.CalcType;
+import com.my.batch.constant.MsgTemplateType;
 import com.my.batch.constant.SendType;
 import com.my.batch.domain.Message;
 import com.my.batch.domain.Notification;
@@ -42,7 +43,7 @@ public class NotificationService {
         return notificationsForMsg;
     }
 
-    public void sendMsg(List<Notification> notifications) {
+    public void sendNotificationMsg(List<Notification> notifications) {
         notifications.stream().forEach((it) -> {
             Boolean isReachedStatus = false;
             int res = it.getGoalExchangeRate().compareTo(it.getExchange().getDealBasR());
@@ -74,6 +75,7 @@ public class NotificationService {
                 .email(notification.getMember().getEmail())
                 .phone(notification.getMember().getPhone())
                 .content(text)
+                .msgTemplateType(MsgTemplateType.RESERVATION)
                 .sendStatus(SendType.SENDING)
                 .build();
     }

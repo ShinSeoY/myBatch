@@ -30,7 +30,7 @@ class NotificationServiceTests {
         List<Notification> notifications = notificationService.validPeriod();
 
         // When
-        notificationService.sendMsg(notifications);
+        notificationService.sendNotificationMsg(notifications);
 
         assertThatNoException();
     }

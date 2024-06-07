@@ -1,5 +1,6 @@
 package com.my.batch.domain;
 
+import com.my.batch.constant.MsgTemplateType;
 import com.my.batch.constant.MsgType;
 import com.my.batch.constant.SendType;
 import jakarta.persistence.*;
@@ -26,6 +27,9 @@ public class Message {
     Integer id;
 
     Integer memberId;
+
+    @Enumerated(EnumType.STRING)
+    private MsgTemplateType msgTemplateType;
 
     @Enumerated(EnumType.STRING)
     private MsgType msgType;
