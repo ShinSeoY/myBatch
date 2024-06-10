@@ -53,7 +53,12 @@ public class EventListenerHandler {
     @EventListener
     public void sendSms(SmsEvent smsEvent) {
         try {
-            String to = smsEvent.getNotification().getMember().getPlainPhone();
+            String to;
+            if (smsEvent.getNotification() != null) {
+                to = smsEvent.getNotification().getMember().getPlainPhone();
+            } else {
+                to = smsEvent.getMessage().getPlainPhone();
+            }
             coolsmsUtils.sendSms(to, smsEvent.getMessage().getContent());
 
             smsEvent.getMessage().setMsgType(MsgType.SMS);

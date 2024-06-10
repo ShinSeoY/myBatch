@@ -10,10 +10,14 @@ import lombok.Getter;
 @AllArgsConstructor
 public class SmsEvent extends MsgEventBase {
 
-    public SmsEvent(CryptoDbUtil cryptoDbUtil, Notification notification, Message message) {
+    public SmsEvent(CryptoDbUtil cryptoDbUtil, Notification notification, Message message, String encPhone) {
         super(notification, message);
         try {
-            notification.getMember().setPlainPhone(cryptoDbUtil.decrypt(notification.getMember().getPhone()));
+            if (notification != null && encPhone == null) {
+                notification.getMember().setPlainPhone(cryptoDbUtil.decrypt(notification.getMember().getPhone()));
+            } else {
+                message.setPlainPhone(cryptoDbUtil.decrypt(encPhone));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

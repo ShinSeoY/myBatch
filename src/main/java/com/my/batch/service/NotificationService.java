@@ -61,7 +61,7 @@ public class NotificationService {
                     it.setEnabled(false);
                 }
                 if (it.isSmsEnabled()) {
-                    publisher.publishEvent(new SmsEvent(cryptoDbUtil, it, smsMessage));
+                    publisher.publishEvent(new SmsEvent(cryptoDbUtil, it, smsMessage, null));
                     it.setEnabled(false);
                 }
                 notificationRepository.save(it);

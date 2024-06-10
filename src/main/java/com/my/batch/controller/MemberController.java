@@ -4,6 +4,7 @@ import com.my.batch.annotation.LoginUser;
 import com.my.batch.common.security.AuthenticationTokenProvider;
 import com.my.batch.domain.Member;
 import com.my.batch.dto.common.BaseResultDto;
+import com.my.batch.dto.member.request.CertificationRequestDto;
 import com.my.batch.dto.member.request.MemberRequestDto;
 import com.my.batch.dto.member.request.NotificationRequestDto;
 import com.my.batch.dto.member.response.CheckEmailResponseDto;
@@ -35,6 +36,16 @@ public class MemberController {
     @PostMapping("/signup")
     public ResponseEntity saveMember(@RequestBody MemberRequestDto memberRequestDto) throws Exception {
         memberService.saveMember(memberRequestDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     * @param certificationRequestDto
+     * @apiNote 본인인증 문자메세지 전송
+     */
+    @PostMapping("/certification-msg")
+    public ResponseEntity sendCertificationMsg(@RequestBody CertificationRequestDto certificationRequestDto) {
+        memberService.sendCertificationMsg(certificationRequestDto.getPhone());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

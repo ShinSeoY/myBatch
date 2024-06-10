@@ -2,10 +2,10 @@ package com.my.batch.service;
 
 import com.my.batch.common.security.AuthenticationTokenProvider;
 import com.my.batch.common.utils.CryptoDbUtil;
-import com.my.batch.constant.CalcType;
-import com.my.batch.constant.ResultCode;
+import com.my.batch.constant.*;
 import com.my.batch.domain.*;
 import com.my.batch.dto.common.BaseResultDto;
+import com.my.batch.dto.common.msg.SmsEvent;
 import com.my.batch.dto.member.request.MemberRequestDto;
 import com.my.batch.dto.member.request.NotificationRequestDto;
 import com.my.batch.dto.member.response.CheckEmailResponseDto;
@@ -13,18 +13,21 @@ import com.my.batch.dto.member.response.LoginResponseDto;
 import com.my.batch.dto.member.response.MemberFavListResponseDto;
 import com.my.batch.dto.member.response.NotificationResponseDto;
 import com.my.batch.exception.error.NotFoundUserException;
+import com.my.batch.exception.error.SendMsgFailErrorException;
 import com.my.batch.repository.ExchangeRepository;
 import com.my.batch.repository.MemberExchangeRepository;
 import com.my.batch.repository.MemberRepository;
 import com.my.batch.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -38,10 +41,40 @@ public class MemberService {
 
     private final CryptoDbUtil cryptoDbUtil;
     private final AuthenticationTokenProvider authenticationTokenProvider;
+    private final ApplicationEventPublisher publisher;
 
     private final String EMAIL = "email";
     private final String SMS = "sms";
 
+    public void sendCertificationMsg(String phone) {
+        try {
+            Message message = buildCertificationMessage(phone);
+            publisher.publishEvent(new SmsEvent(cryptoDbUtil, null, message, message.getPhone()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SendMsgFailErrorException();
+        }
+    }
+
+    private Message buildCertificationMessage(String phone) throws Exception {
+        return Message.builder()
+                .phone(cryptoDbUtil.encrypt(phone))
+                .content("인증번호는 [" + getRandomNum() + "] 입니다")
+                .msgType(MsgType.SMS)
+                .msgTemplateType(MsgTemplateType.CERTIFICATION)
+                .sendStatus(SendType.SENDING)
+                .build();
+    }
+
+    private String getRandomNum() {
+        Integer length = 6;
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            sb.append(random.nextInt(10));
+        }
+        return sb.toString();
+    }
 
     public void saveMember(MemberRequestDto memberRequestDto) throws Exception {
         memberRepository.save(

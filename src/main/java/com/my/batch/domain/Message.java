@@ -38,6 +38,10 @@ public class Message {
 
     private String phone;
 
+    @Setter
+    @org.springframework.data.annotation.Transient
+    private String plainPhone;
+
     private String content;
 
     @Enumerated(EnumType.STRING)
