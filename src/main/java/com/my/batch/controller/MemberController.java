@@ -45,8 +45,7 @@ public class MemberController {
      */
     @PostMapping("/certification-msg")
     public ResponseEntity sendCertificationMsg(@RequestBody CertificationRequestDto certificationRequestDto) {
-        memberService.sendCertificationMsg(certificationRequestDto.getPhone());
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(memberService.sendCertificationMsg(certificationRequestDto.getPhone()), HttpStatus.OK);
     }
 
     /**

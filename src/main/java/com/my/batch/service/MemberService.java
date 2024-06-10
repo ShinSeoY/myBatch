@@ -46,10 +46,13 @@ public class MemberService {
     private final String EMAIL = "email";
     private final String SMS = "sms";
 
-    public void sendCertificationMsg(String phone) {
+    public BaseResultDto sendCertificationMsg(String phone) {
         try {
             Message message = buildCertificationMessage(phone);
             publisher.publishEvent(new SmsEvent(cryptoDbUtil, null, message, message.getPhone()));
+            return BaseResultDto.builder()
+                    .code(ResultCode.SUCCESS.getCode())
+                    .build();
         } catch (Exception e) {
             e.printStackTrace();
             throw new SendMsgFailErrorException();
