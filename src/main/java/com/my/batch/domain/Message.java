@@ -39,7 +39,7 @@ public class Message {
     private String phone;
 
     @Setter
-    @org.springframework.data.annotation.Transient
+    @Transient
     private String plainPhone;
 
     private String content;
