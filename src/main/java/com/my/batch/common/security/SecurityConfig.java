@@ -32,6 +32,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/member/login").permitAll()
                         .requestMatchers("/api/member/check-email/*").permitAll()
                         .requestMatchers("/api/member/certification-msg").permitAll()
+                        .requestMatchers("/api/member/certification-msg/check").permitAll()
                         .anyRequest()
                         .authenticated())
                 .sessionManagement((requests) -> requests.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -6,21 +6,19 @@ import com.my.batch.constant.*;
 import com.my.batch.domain.*;
 import com.my.batch.dto.common.BaseResultDto;
 import com.my.batch.dto.common.msg.SmsEvent;
+import com.my.batch.dto.member.request.CertificationRequestDto;
 import com.my.batch.dto.member.request.MemberRequestDto;
 import com.my.batch.dto.member.request.NotificationRequestDto;
-import com.my.batch.dto.member.response.CheckEmailResponseDto;
-import com.my.batch.dto.member.response.LoginResponseDto;
-import com.my.batch.dto.member.response.MemberFavListResponseDto;
-import com.my.batch.dto.member.response.NotificationResponseDto;
+import com.my.batch.dto.member.response.*;
 import com.my.batch.exception.error.NotFoundUserException;
 import com.my.batch.exception.error.SendMsgFailErrorException;
-import com.my.batch.repository.ExchangeRepository;
-import com.my.batch.repository.MemberExchangeRepository;
-import com.my.batch.repository.MemberRepository;
-import com.my.batch.repository.NotificationRepository;
+import com.my.batch.exception.error.UncaughtException;
+import com.my.batch.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +36,7 @@ public class MemberService {
     private final MemberExchangeRepository memberExchangeRepository;
     private final ExchangeRepository exchangeRepository;
     private final NotificationRepository notificationRepository;
+    private final MessageRepository messageRepository;
 
     private final CryptoDbUtil cryptoDbUtil;
     private final AuthenticationTokenProvider authenticationTokenProvider;
@@ -77,6 +76,27 @@ public class MemberService {
             sb.append(random.nextInt(10));
         }
         return sb.toString();
+    }
+
+    public CertificationResponseDto checkCertificationMsg(CertificationRequestDto certificationRequestDto) {
+        try {
+            Page<Message> page = messageRepository.findByCertification(cryptoDbUtil.encrypt(certificationRequestDto.getPhone()), certificationRequestDto.getCertificationMsg(), PageRequest.of(0, 1));
+            if (page.getTotalPages() > 0) {
+                return CertificationResponseDto.builder()
+                        .code(ResultCode.SUCCESS.getCode())
+                        .isValid(true)
+                        .build();
+            } else {
+                return CertificationResponseDto.builder()
+                        .code(ResultCode.SUCCESS.getCode())
+                        .isValid(false)
+                        .build();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new UncaughtException();
+        }
+
     }
 
     public void saveMember(MemberRequestDto memberRequestDto) throws Exception {

@@ -12,5 +12,6 @@ import lombok.RequiredArgsConstructor;
 public class CertificationRequestDto {
 
     String phone;
+    String certificationMsg;
 
 }

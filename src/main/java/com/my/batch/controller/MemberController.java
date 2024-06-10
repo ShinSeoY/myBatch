@@ -49,6 +49,15 @@ public class MemberController {
     }
 
     /**
+     * @param certificationRequestDto
+     * @apiNote 본인인증 문자메세지 확인
+     */
+    @PostMapping("/certification-msg/check")
+    public ResponseEntity checkCertificationMsg(@RequestBody CertificationRequestDto certificationRequestDto) {
+        return new ResponseEntity<>(memberService.checkCertificationMsg(certificationRequestDto), HttpStatus.OK);
+    }
+
+    /**
      * @param memberRequestDto
      * @apiNote 로그인
      */
