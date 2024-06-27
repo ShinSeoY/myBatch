@@ -20,17 +20,6 @@ AWS RDS <br/>
 Docker <br/>
 Docker-compose <br/>
 <br/>
-
-## 적용 기술
-> - Spring security <br/><br/>
-> - 한국수출입은행 Open API 적용 <br/><br/>
-> - Spring Batch, Scheduler를 통한 오늘의 환율 정보 업데이트 <br/><br/>
-> - AES-256 암호화 <br/><br/>
-> - 나의 관심환율 설정 <br/><br/>
-> - 환율 계산기 제공 <br/><br/>
-> - 환율 알림 설정 시 특정 시간 batch를 통한 SMS 또는 Email 알림 서비스 제공 <br/><br/>
-
-<br/>
 <br/>
 
 ## 적용 서비스
