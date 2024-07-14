@@ -23,28 +23,31 @@ public class BatchSchedule {
     private final Job exchangeSaveJob;
     private final Job notificationJob;
 
+    private boolean isProcess = false;
+
     @Scheduled(cron = "0 1 11 * * *") //매일 아침 11시 0분 0초에 실행
     public void runExchangeSaveJob() {
-        // 동일 job을 계속 실행하게 하기 위해 파라미터 설정
-        JobParameters parameters = new JobParametersBuilder().addString("time", LocalDateTime.now().toString()).toJobParameters();
-        try {
-            log.info("scheduler is running ......{}", LocalDateTime.now());
-            jobLauncher.run(exchangeSaveJob, parameters);
-        } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
-                 | JobParametersInvalidException | org.springframework.batch.core.repository.JobRestartException e) {
-            log.error(e.getMessage());
-        }
+        executeJob(exchangeSaveJob);
     }
 
     @Scheduled(cron = "0 0 9-17 * * *") //매일 오전9-오후5시까지 한시간마다 한번씩 실행
     public void runNotificationJob() {
+        executeJob(notificationJob);
+    }
+
+    private void executeJob(Job job) {
+        if (!isProcess) {
+            return;
+        }
+
         JobParameters parameters = new JobParametersBuilder().addString("time", LocalDateTime.now().toString()).toJobParameters();
         try {
-            log.info("scheduler is running ......{}", LocalDateTime.now());
-            jobLauncher.run(notificationJob, parameters);
+            LocalDateTime startTime = LocalDateTime.now();
+            log.info("Scheduler is running job '{}' at {}.", job.getName(), startTime);
+            jobLauncher.run(job, parameters);
         } catch (JobExecutionAlreadyRunningException | JobInstanceAlreadyCompleteException
                  | JobParametersInvalidException | org.springframework.batch.core.repository.JobRestartException e) {
-            log.error(e.getMessage());
+            log.error("Failed to run job '{}': {}", job.getName(), e.getMessage());
         }
     }
 }
