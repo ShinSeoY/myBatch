@@ -36,12 +36,9 @@ spring:
       production: ""
     active: dev
 
-  # kafka 설정
-  kafka:
-    bootstrap-servers: 127.0.0.1:29092 #, 127.0.0.1:29093, 127.0.0.1:29094
-    consumer:
-      group-id: my-group
-      auto-offset-reset: earliest
+# kafka 설정
+kafka:
+  bootstrap-servers: localhost:9091,localhost:9092,localhost:9093
 
 security:
   jwt:
