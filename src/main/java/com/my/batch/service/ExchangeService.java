@@ -5,6 +5,7 @@ import com.my.batch.constant.ResultCode;
 import com.my.batch.domain.Exchange;
 import com.my.batch.dto.common.PageBaseDto;
 import com.my.batch.dto.exchange.response.ExchangeListResponseDto;
+import com.my.batch.dto.exchange.response.ExchangeScrapResponseDto;
 import com.my.batch.dto.exchange.response.ExchangeWebApiResponseDto;
 import com.my.batch.repository.ExchangeRepository;
 import lombok.RequiredArgsConstructor;
@@ -63,6 +64,12 @@ public class ExchangeService {
     public void saveExchangeList(List<ExchangeWebApiResponseDto> exchangeWebApiResponseDtoList) {
         for (ExchangeWebApiResponseDto dto : exchangeWebApiResponseDtoList) {
             exchangeRepository.save(ExchangeWebApiResponseDto.toExchange(dto));
+        }
+    }
+
+    public void saveExchange(ExchangeScrapResponseDto exchangeScrapResponseDto) {
+        if (exchangeScrapResponseDto != null) {
+            exchangeRepository.save(ExchangeScrapResponseDto.toExchange(exchangeScrapResponseDto));
         }
     }
 
