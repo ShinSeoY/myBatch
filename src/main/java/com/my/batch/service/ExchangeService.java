@@ -44,9 +44,6 @@ public class ExchangeService {
                                                 .unit(it.getUnit())
                                                 .krUnit(it.getKrUnit())
                                                 .dealBasR(it.getDealBasR())
-                                                .exchangeRate(it.getExchangeRate())
-                                                .ttb(it.getTtb())
-                                                .tts(it.getTts())
                                                 .updatedAt(it.getUpdatedAt())
                                                 .build()
                                 )).collect(Collectors.toList())
@@ -67,8 +64,8 @@ public class ExchangeService {
         }
     }
 
-    public void saveExchange(ExchangeScrapResponseDto exchangeScrapResponseDto) {
-        if (exchangeScrapResponseDto != null) {
+    public void saveScrapExchange(ExchangeScrapResponseDto exchangeScrapResponseDto) {
+        if (exchangeScrapResponseDto != null ) {
             exchangeRepository.save(ExchangeScrapResponseDto.toExchange(exchangeScrapResponseDto));
         }
     }

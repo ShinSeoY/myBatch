@@ -37,9 +37,6 @@ public class ExchangeWebApiResponseDto implements Serializable {
                 .unit(validUnit(dto.getCur_unit()))
                 .krUnit(validKrUnit(dto.getCur_nm()))
                 .dealBasR(dealBasR)
-                .exchangeRate(calcExchangeRage(dealBasR, dto.getCur_unit())) // 소수점 둘째자리 반올림
-                .ttb(Double.valueOf(dto.getTtb().replaceAll(",", "")))
-                .tts(Double.valueOf(dto.getTts().replaceAll(",", "")))
                 .build();
     }
 

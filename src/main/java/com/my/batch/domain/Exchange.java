@@ -32,12 +32,6 @@ public class Exchange implements Serializable {
 
     Double dealBasR;
 
-    Double exchangeRate;
-
-    Double ttb;
-
-    Double tts;
-
     @CreatedDate
     @Column(updatable = false)
     LocalDateTime createdAt;

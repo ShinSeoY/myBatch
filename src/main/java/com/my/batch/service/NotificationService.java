@@ -82,7 +82,7 @@ public class NotificationService {
 
     public String getText(Notification notification) {
         return "예약 환율 알림 \n" +
-                notification.getExchange().getName() + "(" + notification.getExchange().getUnit() + ") 매매 기준율 : " + notification.getExchange().getExchangeRate() + " " + notification.getExchange().getKrUnit();
+                notification.getExchange().getName() + "(" + notification.getExchange().getUnit() + ") 매매 기준율 : " + notification.getExchange().getDealBasR() + " " + notification.getExchange().getKrUnit();
     }
 
 }

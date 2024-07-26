@@ -155,7 +155,6 @@ public class MemberService {
                                                 .unit(it.getExchange().getUnit())
                                                 .krUnit(it.getExchange().getKrUnit())
                                                 .dealBasR(it.getExchange().getDealBasR())
-                                                .exchangeRate(it.getExchange().getExchangeRate())
                                                 .build()
                                 )
                         ).collect(Collectors.toList())
