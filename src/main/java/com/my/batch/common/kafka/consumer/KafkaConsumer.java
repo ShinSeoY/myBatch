@@ -6,12 +6,14 @@ import com.my.batch.dto.exchange.response.ExchangeScrapResponseDto;
 import com.my.batch.exception.error.ParsingException;
 import com.my.batch.service.ExchangeService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class KafkaConsumer {
 
@@ -21,10 +23,8 @@ public class KafkaConsumer {
     public void listen(ConsumerRecord<String, String> record, Acknowledgment ack) {
         if (record.value() != null) {
             ExchangeScrapResponseDto exchangeScrapResponseDto = convertJsonToExchangeDto(record.value());
-            exchangeService.saveExchange(exchangeScrapResponseDto);
+            exchangeService.saveScrapExchange(exchangeScrapResponseDto);
         }
-
-        // 메시지 처리가 성공적으로 완료되면 ack를 호출
         ack.acknowledge();
     }
 
