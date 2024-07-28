@@ -19,7 +19,7 @@ public class KafkaConsumer {
 
     private final ExchangeService exchangeService;
 
-    @KafkaListener(topics = "my-topic5", groupId = "my-group")
+//    @KafkaListener(topics = "my-topic5", groupId = "my-group")
     public void listen(ConsumerRecord<String, String> record, Acknowledgment ack) {
         if (record.value() != null) {
             ExchangeScrapResponseDto exchangeScrapResponseDto = convertJsonToExchangeDto(record.value());
