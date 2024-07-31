@@ -1,10 +1,7 @@
 package com.my.batch.dto.exchange.response;
 
 import com.my.batch.dto.common.BaseResultDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
@@ -30,8 +27,7 @@ public class ExchangeListResponseDto extends BaseResultDto {
         String krUnit;
         Double dealBasR;
         Double exchangeRate;
-        Double ttb;
-        Double tts;
+        Integer displayUnit;
         LocalDateTime updatedAt;
     }
 

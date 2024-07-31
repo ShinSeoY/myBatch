@@ -44,6 +44,7 @@ public class ExchangeService {
                                                 .unit(it.getUnit())
                                                 .krUnit(it.getKrUnit())
                                                 .dealBasR(it.getDealBasR())
+                                                .displayUnit(it.getDisplayUnit())
                                                 .updatedAt(it.getUpdatedAt())
                                                 .build()
                                 )).collect(Collectors.toList())
@@ -65,7 +66,7 @@ public class ExchangeService {
     }
 
     public void saveScrapExchange(ExchangeScrapResponseDto exchangeScrapResponseDto) {
-        if (exchangeScrapResponseDto != null ) {
+        if (exchangeScrapResponseDto != null) {
             exchangeRepository.save(ExchangeScrapResponseDto.toExchange(exchangeScrapResponseDto));
         }
     }
