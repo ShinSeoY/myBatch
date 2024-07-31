@@ -214,6 +214,13 @@ public class MemberService {
 
     @Transactional
     public BaseResultDto enableNotification(Member member, NotificationRequestDto notificationRequestDto) {
+        Notification prevNotification = notificationRepository.findByMemberId(member.getId());
+
+        // 기존 알림 삭제
+        if (prevNotification != null) {
+            notificationRepository.delete(prevNotification);
+        }
+
         if (notificationRequestDto != null && !notificationRequestDto.getEnabledNotificatonList().isEmpty()) {
             Exchange exchange = exchangeRepository.findById(notificationRequestDto.getUnit()).orElseThrow();
 
