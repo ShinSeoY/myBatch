@@ -1,10 +1,7 @@
 package com.my.batch.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.BatchSize;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -31,6 +28,9 @@ public class Exchange implements Serializable {
     String krUnit;
 
     Double dealBasR;
+
+    @Setter
+    Integer displayUnit;
 
     @CreatedDate
     @Column(updatable = false)
