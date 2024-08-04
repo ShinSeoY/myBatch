@@ -3,6 +3,7 @@ package com.my.batch.controller;
 import com.my.batch.annotation.LoginUser;
 import com.my.batch.domain.Member;
 import com.my.batch.dto.common.PageBaseDto;
+import com.my.batch.dto.exchange.request.BatchStatusRequestDto;
 import com.my.batch.service.ExchangeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,16 @@ import org.springframework.web.bind.annotation.*;
 public class ExchangeController {
 
     private final ExchangeService exchangeService;
+
+    /**
+     * @param batchStatusRequestDto
+     * @apiNote 파이썬에서 넘어온 배치 상태 저장
+     */
+    @PostMapping("/batch-status")
+    public ResponseEntity createBatchStatus(@RequestBody BatchStatusRequestDto batchStatusRequestDto) {
+        exchangeService.saveBatchStatus(batchStatusRequestDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     /**
      * @param member

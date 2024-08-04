@@ -2,11 +2,14 @@ package com.my.batch.service;
 
 import com.my.batch.common.utils.ExchangeUtils;
 import com.my.batch.constant.ResultCode;
+import com.my.batch.domain.BatchStatus;
 import com.my.batch.domain.Exchange;
 import com.my.batch.dto.common.PageBaseDto;
+import com.my.batch.dto.exchange.request.BatchStatusRequestDto;
 import com.my.batch.dto.exchange.response.ExchangeListResponseDto;
 import com.my.batch.dto.exchange.response.ExchangeScrapResponseDto;
 import com.my.batch.dto.exchange.response.ExchangeWebApiResponseDto;
+import com.my.batch.repository.BatchStatusRepository;
 import com.my.batch.repository.ExchangeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +26,21 @@ import java.util.stream.Collectors;
 public class ExchangeService {
     private final ExchangeRepository exchangeRepository;
     private final ExchangeUtils exchangeUtils;
+    private final BatchStatusRepository batchStatusRepository;
+
+    public void saveBatchStatus(BatchStatusRequestDto batchStatusRequestDto) {
+        BatchStatus batchStatus = BatchStatus
+                .builder()
+                .dagName(batchStatusRequestDto.getDagName())
+                .status(batchStatusRequestDto.getStatus())
+                .duration(batchStatusRequestDto.getDuration())
+                .startTime(batchStatusRequestDto.getStartTime())
+                .endTime(batchStatusRequestDto.getEndTime())
+                .failedStepName(batchStatusRequestDto.getFailedStepName())
+                .errMsg(batchStatusRequestDto.getErrMsg())
+                .build();
+        batchStatusRepository.save(batchStatus);
+    }
 
     public ExchangeListResponseDto findExchangeList(PageBaseDto pageBaseDto) {
         List<Exchange> exchanges;

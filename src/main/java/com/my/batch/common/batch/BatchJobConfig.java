@@ -21,6 +21,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -115,7 +116,8 @@ public class BatchJobConfig {
         return new StepBuilder("sendMsgStep", jobRepository)
                 .tasklet(((contribution, chunkContext) -> {
                     List<Notification> result = (List<Notification>) chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext().get("result");
-                    notificationService.sendNotificationMsg(result);
+//                    notificationService.sendNotificationMsg(result);
+                    notificationService.sendNotificationMsgToKafka(result); // > consumer listener가 듣고 있음
 
                     contribution.setExitStatus(ExitStatus.COMPLETED);
 
@@ -155,21 +157,25 @@ public class BatchJobConfig {
                         .jobName(jobName)
                         .status(stepExecution.getExitStatus().getExitCode())
                         .startTime(startTime)
-                        .failStepName("-")
-                        .errMsg("-")
                         .build();
 
                 // 마지막 스텝이 COMPLETED 인 상태로 종료
                 if (stepExecution.getStatus().name().equals(SUCCESS_EXIT_STATUS) && stepExecution.getStepName().equals(lastJobName)) {
-                    batchStatus.setEndTime(LocalDateTime.now());
+                    LocalDateTime endDate = LocalDateTime.now();
+
+                    batchStatus.setEndTime(endDate);
+                    batchStatus.setDuration(Duration.between(endDate, startTime).toMillis());
                     batchStatusRepository.save(batchStatus);
                 }
 
                 // 스텝이 COMPLETED 가 아닌 상태로 종료
                 if (!stepExecution.getStatus().name().equals(SUCCESS_EXIT_STATUS)) {
+                    LocalDateTime endDate = LocalDateTime.now();
+
                     batchStatus.setEndTime(LocalDateTime.now());
-                    batchStatus.setFailStepName(stepExecution.getStepName());
+                    batchStatus.setFailedStepName(stepExecution.getStepName());
                     batchStatus.setErrMsg(stepExecution.getExitStatus().getExitDescription());
+                    batchStatus.setDuration(Duration.between(endDate, startTime).toMillis());
                     batchStatusRepository.save(batchStatus);
                 }
 

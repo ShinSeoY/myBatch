@@ -36,11 +36,8 @@ spring:
       production: ""
     active: dev
 
-# kafka 설정
-kafka:
-  bootstrap-servers: localhost:9091,localhost:9092,localhost:9093
-
 security:
+  x-api-key: ${X_API_KEY}
   jwt:
     key-value: ${SECURITY_JWT_KEY}
   crypto-db-iv: ${SECURITY_CRYPTO_IV} # 256 bit
@@ -67,6 +64,15 @@ spring.config.activate.on-profile: local-envs
 server:
   port: 8080
 
+# kafka 설정
+# localhost:9091... 을 쓰고 싶으면(docker로 배포 된 거 말고 로컬에서 돌릴라면) kafka compose 파일 아래처럼 수정해야함
+# KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka1:19091,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9091
+# 도커 내부에서 돌리고 싶으면 아래와 같이 수정
+#KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka1:19091,LISTENER_DOCKER_EXTERNAL://kafka1:9091
+kafka:
+#  bootstrap-servers: kafka1:9091,kafka2:9092,kafka3:9093
+  bootstrap-servers: localhost:9091,localhost:9092,localhost:9093
+
 ---
 # local db
 spring.config.activate.on-profile: local-db
@@ -83,6 +89,10 @@ spring:
 spring.config.activate.on-profile: dev-envs
 server:
   port: 8082
+
+# kafka 설정
+kafka:
+  bootstrap-servers: kafka1:9091,kafka2:9092,kafka3:9093
 
 ---
 
