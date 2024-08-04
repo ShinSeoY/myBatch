@@ -164,7 +164,7 @@ public class BatchJobConfig {
                     LocalDateTime endDate = LocalDateTime.now();
 
                     batchStatus.setEndTime(endDate);
-                    batchStatus.setDuration(Duration.between(endDate, startTime).toMillis());
+                    batchStatus.setDuration(Duration.between(startTime, endDate).toMillis());
                     batchStatusRepository.save(batchStatus);
                 }
 
@@ -175,7 +175,7 @@ public class BatchJobConfig {
                     batchStatus.setEndTime(LocalDateTime.now());
                     batchStatus.setFailedStepName(stepExecution.getStepName());
                     batchStatus.setErrMsg(stepExecution.getExitStatus().getExitDescription());
-                    batchStatus.setDuration(Duration.between(endDate, startTime).toMillis());
+                    batchStatus.setDuration(Duration.between(startTime, endDate).toMillis());
                     batchStatusRepository.save(batchStatus);
                 }
 
