@@ -17,6 +17,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,13 +31,17 @@ public class ExchangeService {
     private final BatchStatusRepository batchStatusRepository;
 
     public void saveBatchStatus(BatchStatusRequestDto batchStatusRequestDto) {
+        OffsetDateTime startTime = OffsetDateTime.parse(batchStatusRequestDto.getStartTime(), DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        OffsetDateTime endTime = OffsetDateTime.parse(batchStatusRequestDto.getEndTime(), DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+
         BatchStatus batchStatus = BatchStatus
                 .builder()
-                .dagName(batchStatusRequestDto.getDagName())
+                .workflowId(batchStatusRequestDto.getWorkflowId())
+                .workflowName(batchStatusRequestDto.getWorkflowName())
                 .status(batchStatusRequestDto.getStatus())
                 .duration(batchStatusRequestDto.getDuration())
-                .startTime(batchStatusRequestDto.getStartTime())
-                .endTime(batchStatusRequestDto.getEndTime())
+                .startTime(startTime.toLocalDateTime())
+                .endTime(endTime.toLocalDateTime())
                 .failedStepName(batchStatusRequestDto.getFailedStepName())
                 .errMsg(batchStatusRequestDto.getErrMsg())
                 .build();

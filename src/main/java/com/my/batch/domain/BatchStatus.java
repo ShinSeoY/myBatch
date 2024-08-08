@@ -22,11 +22,12 @@ public class BatchStatus {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    String dagName;
+    @Column(unique = true)
+    String workflowId;
 
-    String jobName;
+    String workflowName;
 
-    String status; // COMPLETED, FAILED, ..
+    String status; // airflow : success, running, failed ... / spring batch : COMPLETED, FAILED ...
 
     long duration; // 밀리초
 

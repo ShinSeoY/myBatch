@@ -154,7 +154,8 @@ public class BatchJobConfig {
             public ExitStatus afterStep(StepExecution stepExecution) {
 
                 BatchStatus batchStatus = BatchStatus.builder()
-                        .jobName(jobName)
+                        .workflowId(String.valueOf(stepExecution.getJobExecutionId()))
+                        .workflowName(jobName)
                         .status(stepExecution.getExitStatus().getExitCode())
                         .startTime(startTime)
                         .build();
