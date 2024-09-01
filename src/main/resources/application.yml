@@ -62,10 +62,10 @@ coolsms:
 # local env
 spring.config.activate.on-profile: local-envs
 server:
-  port: 8080
+  port: 8083
 
 # kafka 설정
-# localhost:9091... 을 쓰고 싶으면(docker로 배포 된 거 말고 로컬에서 돌릴라면) kafka compose 파일 아래처럼 수정해야함
+# localhost:9091 을 쓰고 싶으면(docker로 배포 된 거 말고 로컬에서 돌릴라면) kafka compose 파일 아래처럼 수정해야함
 # KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka1:19091,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9091
 # 도커 내부에서 돌리고 싶으면 아래와 같이 수정
 #KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka1:19091,LISTENER_DOCKER_EXTERNAL://kafka1:9091
