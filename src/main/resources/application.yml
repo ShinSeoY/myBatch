@@ -69,9 +69,9 @@ server:
 # KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka1:19091,LISTENER_DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9091
 # 도커 내부에서 돌리고 싶으면 아래와 같이 수정
 #KAFKA_ADVERTISED_LISTENERS: LISTENER_DOCKER_INTERNAL://kafka1:19091,LISTENER_DOCKER_EXTERNAL://kafka1:9091
-kafka:
+#kafka:
 #  bootstrap-servers: kafka1:9091,kafka2:9092,kafka3:9093
-  bootstrap-servers: localhost:9091,localhost:9092,localhost:9093
+#  bootstrap-servers: localhost:9091,localhost:9092,localhost:9093
 
 ---
 # local db
@@ -84,6 +84,8 @@ spring:
     username: ${LOC_DATASOURCE_USERNAME}
     password: ${LOC_DATASOURCE_PASSWORD}
 
+kafka:
+  bootstrap-servers: localhost:9091,localhost:9092,localhost:9093
 ---
 # dev env
 spring.config.activate.on-profile: dev-envs
