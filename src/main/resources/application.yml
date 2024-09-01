@@ -43,7 +43,7 @@ security:
   crypto-db-iv: ${SECURITY_CRYPTO_IV} # 256 bit
   crypto-db-key: ${SECURITY_CRYPTO_KEY} # 256 bit
 
-
+# test
 # Exchange Rate API
 exchange:
   host: "www.koreaexim.go.kr"
