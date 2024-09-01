@@ -46,7 +46,7 @@ pipeline {
         stage('Check Docker Network') {
             steps {
                 script {
-                    def networkName = 'my_exchange_network'
+                    def networkName = 'my-exchange'
                     def networkCheck = sh(script: "docker network ls --filter name=${networkName} --format '{{.Name}}'", returnStdout: true).trim()
 
                     if (networkCheck.isEmpty()) {
