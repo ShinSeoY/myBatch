@@ -2,8 +2,8 @@ package com.my.batch.controller;
 
 import com.my.batch.annotation.LoginUser;
 import com.my.batch.domain.Member;
-import com.my.batch.dto.common.PageBaseDto;
 import com.my.batch.dto.exchange.request.BatchStatusRequestDto;
+import com.my.batch.dto.exchange.request.ListSearchRequestDto;
 import com.my.batch.service.ExchangeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,12 +40,12 @@ public class ExchangeController {
 
     /**
      * @param member
-     * @param pageBaseDto
+     * @param ListSearchRequestDto
      * @apiNote 환율 리스트 With 페이지네이션
      */
     @PostMapping("")
-    public ResponseEntity findExchangeListWithPagination(@LoginUser Member member, @RequestBody PageBaseDto pageBaseDto) {
-        return new ResponseEntity<>(exchangeService.findExchangeList(pageBaseDto), HttpStatus.OK);
+    public ResponseEntity findExchangeListWithPagination(@LoginUser Member member, @RequestBody ListSearchRequestDto listSearchRequestDto) {
+        return new ResponseEntity<>(exchangeService.findExchangeList(listSearchRequestDto), HttpStatus.OK);
     }
 
     /**

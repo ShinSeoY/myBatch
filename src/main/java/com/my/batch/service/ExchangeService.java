@@ -4,8 +4,8 @@ import com.my.batch.common.utils.ExchangeUtils;
 import com.my.batch.constant.ResultCode;
 import com.my.batch.domain.BatchStatus;
 import com.my.batch.domain.Exchange;
-import com.my.batch.dto.common.PageBaseDto;
 import com.my.batch.dto.exchange.request.BatchStatusRequestDto;
+import com.my.batch.dto.exchange.request.ListSearchRequestDto;
 import com.my.batch.dto.exchange.response.ExchangeListResponseDto;
 import com.my.batch.dto.exchange.response.ExchangeScrapResponseDto;
 import com.my.batch.dto.exchange.response.ExchangeWebApiResponseDto;
@@ -13,7 +13,9 @@ import com.my.batch.repository.BatchStatusRepository;
 import com.my.batch.repository.ExchangeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -48,16 +50,28 @@ public class ExchangeService {
         batchStatusRepository.save(batchStatus);
     }
 
-    public ExchangeListResponseDto findExchangeList(PageBaseDto pageBaseDto) {
-        List<Exchange> exchanges;
-        Sort sort = Sort.by(Sort.Direction.ASC, "name");
+    public ExchangeListResponseDto findExchangeList(ListSearchRequestDto listSearchRequestDto) {
+        Pageable pageable;
+        Page<Exchange> exchangePage;
 
-        if (pageBaseDto != null) {
-            PageRequest pageRequest = PageRequest.of(pageBaseDto.getCurrentPage() - 1, pageBaseDto.getPerPage(), sort);
-            exchanges = exchangeRepository.findAll(pageRequest).stream().toList();
+        if (listSearchRequestDto != null && listSearchRequestDto.getPageBaseDto() != null) {
+            pageable = PageRequest.of(
+                    Math.max(0, listSearchRequestDto.getPageBaseDto().getCurrentPage() - 1),
+                    listSearchRequestDto.getPageBaseDto().getPerPage(),
+                    Sort.by(Sort.Direction.ASC, "name")
+            );
         } else {
-            exchanges = exchangeRepository.findAll(sort);
+            pageable = PageRequest.of(0, Integer.MAX_VALUE, Sort.by(Sort.Direction.ASC, "name"));
         }
+
+        String keyword = listSearchRequestDto != null ? listSearchRequestDto.getKeyword() : null;
+
+        exchangePage = (keyword != null && !keyword.trim().isEmpty())
+                ? exchangeRepository.findAllByNameContaining(keyword.trim(), pageable)
+                : exchangeRepository.findAll(pageable);
+
+        List<Exchange> exchanges = exchangePage.getContent();
+
         return exchanges.size() > 0 ?
                 ExchangeListResponseDto.builder()
                         .code(ResultCode.SUCCESS.getCode())
