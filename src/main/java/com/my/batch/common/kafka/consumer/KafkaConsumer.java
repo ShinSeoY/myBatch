@@ -22,7 +22,7 @@ public class KafkaConsumer {
     private final ExchangeService exchangeService;
     private final NotificationService notificationService;
 
-    @KafkaListener(topics = "save_exchange", groupId = "my-group")
+//    @KafkaListener(topics = "save_exchange", groupId = "my-group")
     public void saveExchange(ConsumerRecord<String, String> record, Acknowledgment ack) {
         if (record.value() != null) {
             ExchangeScrapResponseDto exchangeScrapResponseDto = convertJsonToExchangeDto(record.value());
@@ -40,7 +40,7 @@ public class KafkaConsumer {
         }
     }
 
-    @KafkaListener(topics = "notification", groupId = "my-group")
+//    @KafkaListener(topics = "notification", groupId = "my-group")
     public void notification(ConsumerRecord<String, String> record, Acknowledgment ack) {
         if (record.value() != null) {
             ValidNotificationResponseDto validNotificationResponseDto = convertJsonToNotificationDto(record.value());
