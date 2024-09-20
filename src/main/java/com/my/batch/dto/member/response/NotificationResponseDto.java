@@ -18,6 +18,7 @@ public class NotificationResponseDto extends BaseResultDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class NotificationResponse {
+        private Boolean isTestAccount;
         private String unit;
         private Double goalExchangeRate;
         private CalcType calcType;

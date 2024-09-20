@@ -193,12 +193,22 @@ public class MemberService {
     }
 
     public NotificationResponseDto findNotification(Member member) {
+        if (member.getEmail().equals("test")) {
+            return NotificationResponseDto.builder()
+                    .code(ResultCode.SUCCESS.getCode())
+                    .result(
+                            NotificationResponseDto.NotificationResponse.builder()
+                                    .isTestAccount(true)
+                                    .build()
+                    ).build();
+        }
         Notification notification = notificationRepository.findByMemberId(member.getId());
         if (notification != null) {
             return NotificationResponseDto.builder()
                     .code(ResultCode.SUCCESS.getCode())
                     .result(
                             NotificationResponseDto.NotificationResponse.builder()
+                                    .isTestAccount(false)
                                     .unit(notification.getExchange().getUnit())
                                     .goalExchangeRate(notification.getGoalExchangeRate())
                                     .calcType(notification.getCalcType())
