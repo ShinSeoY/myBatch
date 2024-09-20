@@ -26,7 +26,6 @@ public class BatchSchedule {
     private boolean isProcess = true;
 
 //    @Scheduled(cron = "0 1 11 * * *") //매일 아침 11시 0분 0초에 실행
-    @Scheduled(cron = "0 */5 * * * *")
     // kafka listener가 듣고 있으므로 아예 해당 job이 필요 없어짐
     public void runExchangeSaveJob() {
         executeJob(exchangeSaveJob);
