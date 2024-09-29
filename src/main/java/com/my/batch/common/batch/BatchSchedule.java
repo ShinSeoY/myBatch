@@ -48,9 +48,9 @@ public class BatchSchedule {
         if (nextDelay.getAndDecrement() <= 0) {
             executeJob(scrapAndSaveJob);
 
-            // 다음 실행 시간 설정 (1-3분 사이 무작위 선택)
+            // 다음 실행 시간 설정 (10, 20 30분 사이 무작위 선택)
             int randomMinutes = random.nextInt(3) + 1;
-            nextDelay.set(randomMinutes * 60);
+            nextDelay.set(randomMinutes * 600);
         }
     }
 
