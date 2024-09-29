@@ -40,7 +40,7 @@ public class ExchangeController {
 
     /**
      * @param member
-     * @param ListSearchRequestDto
+     * @param listSearchRequestDto
      * @apiNote 환율 리스트 With 페이지네이션
      */
     @PostMapping("")

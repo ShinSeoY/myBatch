@@ -35,6 +35,57 @@ spring:
       dev: "dev-envs, dev-db"
       production: ""
     active: dev
+#  elasticsearch:
+#    uris: http://localhost:9200
+#    connection-timeout: 1s
+#    socket-timeout: 1m
+#    rest:
+#      connection-timeout: 1s
+#      read-timeout: 1m
+#    index:
+#      exchange:
+#        name: exchange
+#        settings: |
+#          {
+#            "analysis": {
+#              "analyzer": {
+#                "nori_analyzer": {
+#                  "type": "custom",
+#                  "tokenizer": "nori_tokenizer",
+#                  "filter": ["nori_part_of_speech", "nori_readingform"]
+#                }
+#              },
+#              "tokenizer": {
+#                "nori_tokenizer": {
+#                  "type": "nori_tokenizer",
+#                  "decompound_mode": "mixed"
+#                }
+#              }
+#            }
+#          }
+#    indices:
+#      exchange:
+#        name: exchange
+#        settings: |
+#          {
+#            "index": {
+#              "analysis": {
+#                "analyzer": {
+#                  "nori_analyzer": {
+#                    "type": "custom",
+#                    "tokenizer": "nori_tokenizer",
+#                    "filter": ["nori_part_of_speech", "nori_readingform"]
+#                  }
+#                },
+#                "tokenizer": {
+#                  "nori_tokenizer": {
+#                    "type": "nori_tokenizer",
+#                    "decompound_mode": "mixed"
+#                  }
+#                }
+#              }
+#            }
+#          }
 
 security:
   x-api-key: ${X_API_KEY}

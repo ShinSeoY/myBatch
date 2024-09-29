@@ -10,6 +10,7 @@ import com.my.batch.dto.exchange.response.ExchangeListResponseDto;
 import com.my.batch.dto.exchange.response.ExchangeScrapResponseDto;
 import com.my.batch.dto.exchange.response.ExchangeWebApiResponseDto;
 import com.my.batch.repository.BatchStatusRepository;
+//import com.my.batch.elasticsearchRepository.ExchangeElasticsearchRepository;
 import com.my.batch.repository.ExchangeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ExchangeService {
     private final ExchangeRepository exchangeRepository;
+//    private final ExchangeElasticsearchRepository exchangeElasticsearchRepository;
     private final ExchangeUtils exchangeUtils;
     private final BatchStatusRepository batchStatusRepository;
 
@@ -66,6 +68,7 @@ public class ExchangeService {
 
         String keyword = listSearchRequestDto != null ? listSearchRequestDto.getKeyword() : null;
 
+//        List<Exchange> res = exchangeElasticsearchRepository.findByNameContaining("대");
         exchangePage = (keyword != null && !keyword.trim().isEmpty())
                 ? exchangeRepository.findAllByNameContaining(keyword.trim(), pageable)
                 : exchangeRepository.findAll(pageable);
