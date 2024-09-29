@@ -1,11 +1,9 @@
 package com.my.batch.dto.exchange.response;
 
 import com.my.batch.domain.Exchange;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,7 +11,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ExchangeScrapResponseDto {
+@Setter
+public class ExchangeScrapResponseDto implements Serializable {
 
     private String unit;
     private String name;

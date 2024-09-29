@@ -3,10 +3,12 @@ package com.my.batch.common.batch;
 import com.my.batch.common.utils.ExchangeUtils;
 import com.my.batch.domain.BatchStatus;
 import com.my.batch.domain.Notification;
+import com.my.batch.dto.exchange.response.ExchangeScrapResponseDto;
 import com.my.batch.dto.exchange.response.ExchangeWebApiResponseDto;
 import com.my.batch.repository.BatchStatusRepository;
 import com.my.batch.service.ExchangeService;
 import com.my.batch.service.NotificationService;
+import com.my.batch.service.WebScrapingService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -34,13 +36,18 @@ public class BatchJobConfig {
     private final ExchangeService exchangeService;
     private final BatchStatusRepository batchStatusRepository;
     private final NotificationService notificationService;
-    private final String EXCHANGE_JOB_NAME = "exchangeSaveJob";
-    private final String EXCHANGE_LAST_STEP_NAME = "exchangeSaveStep";
+    private final WebScrapingService webScrapingService;
+
     private final String SUCCESS_EXIT_STATUS = "COMPLETED";
 
-    private final String NOTIFICATION_JOB_NAME = "notificationJob";
+    private final String EXCHANGE_JOB_NAME = "exchangeSaveJob";
+    private final String EXCHANGE_LAST_STEP_NAME = "exchangeSaveStep";
 
+    private final String NOTIFICATION_JOB_NAME = "notificationJob";
     private final String NOTIFICATION_LAST_STEP_NAME = "sendMsgStep";
+
+    private final String SCRAP_SAVE_JOB_NAME = "scrapAndSaveJob";
+    private final String SCRAP_SAVE_LAST_STEP_NAME = "saveStep";
 
     @Bean
     public Job notificationJob(JobRepository jobRepository, Step validPeriodStep, Step sendMsgStep) {
@@ -62,6 +69,19 @@ public class BatchJobConfig {
                 .start(parsingStep)
                 .on(SUCCESS_EXIT_STATUS)
                 .to(exchangeSaveStep)
+                .on(SUCCESS_EXIT_STATUS)
+                .end()
+                .end()
+                .build();
+    }
+
+    @Bean
+    public Job scrapAndSaveJob(JobRepository jobRepository, Step scrapStep, Step saveStep) {
+        return new JobBuilder(SCRAP_SAVE_JOB_NAME, jobRepository)
+                .incrementer(new RunIdIncrementer())
+                .start(scrapStep)
+                .on(SUCCESS_EXIT_STATUS)
+                .to(saveStep)
                 .on(SUCCESS_EXIT_STATUS)
                 .end()
                 .end()
@@ -127,6 +147,34 @@ public class BatchJobConfig {
                 .build();
     }
 
+    @Bean
+    public Step scrapStep(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager, StepExecutionListener scrapAndSaveStepExecutionListener) {
+        return new StepBuilder("scrapStep", jobRepository)
+                .tasklet(((contribution, chunkContext) -> {
+                    List<ExchangeScrapResponseDto> result = webScrapingService.extractInformation();
+
+                    contribution.setExitStatus(ExitStatus.COMPLETED);
+                    chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext().put("result", result);
+                    return RepeatStatus.FINISHED;
+                }), platformTransactionManager)
+                .listener(scrapAndSaveStepExecutionListener)
+                .build();
+    }
+
+    @Bean
+    public Step saveStep(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager, StepExecutionListener scrapAndSaveStepExecutionListener) {
+        return new StepBuilder("saveStep", jobRepository)
+                .tasklet(((contribution, chunkContext) -> {
+                    List<ExchangeScrapResponseDto> result = (List<ExchangeScrapResponseDto>) chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext().get("result");
+                    exchangeService.saveScrapExchangeList(result);
+
+                    contribution.setExitStatus(ExitStatus.COMPLETED);
+                    return RepeatStatus.FINISHED;
+                }), platformTransactionManager)
+                .listener(scrapAndSaveStepExecutionListener)
+                .build();
+    }
+
     @StepScope
     @Bean
     public StepExecutionListener exchangeSaveStepExecutionListener() {
@@ -137,6 +185,12 @@ public class BatchJobConfig {
     @Bean
     public StepExecutionListener notificationStepExecutionListener() {
         return getStepExecutionListener(NOTIFICATION_JOB_NAME, NOTIFICATION_LAST_STEP_NAME);
+    }
+
+    @StepScope
+    @Bean
+    public StepExecutionListener scrapAndSaveStepExecutionListener() {
+        return getStepExecutionListener(SCRAP_SAVE_JOB_NAME, SCRAP_SAVE_LAST_STEP_NAME);
     }
 
     @NotNull
@@ -159,7 +213,6 @@ public class BatchJobConfig {
                         .status(stepExecution.getExitStatus().getExitCode())
                         .startTime(startTime)
                         .build();
-
                 // 마지막 스텝이 COMPLETED 인 상태로 종료
                 if (stepExecution.getStatus().name().equals(SUCCESS_EXIT_STATUS) && stepExecution.getStepName().equals(lastJobName)) {
                     LocalDateTime endDate = LocalDateTime.now();

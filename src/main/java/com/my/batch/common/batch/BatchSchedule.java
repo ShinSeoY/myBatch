@@ -13,19 +13,26 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.time.LocalDateTime;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
 public class BatchSchedule {
 
+    private final Random random = new Random();
+    private final AtomicInteger nextDelay = new AtomicInteger(0);
+
     private final JobLauncher jobLauncher;
     private final Job exchangeSaveJob;
     private final Job notificationJob;
+    private final Job scrapAndSaveJob;
 
     private boolean isProcess = true;
 
-//    @Scheduled(cron = "0 1 11 * * *") //매일 아침 11시 0분 0초에 실행
+
+    //    @Scheduled(cron = "0 1 11 * * *") //매일 아침 11시 0분 0초에 실행
     // kafka listener가 듣고 있으므로 아예 해당 job이 필요 없어짐
     public void runExchangeSaveJob() {
         executeJob(exchangeSaveJob);
@@ -34,6 +41,17 @@ public class BatchSchedule {
     @Scheduled(cron = "0 0 9-17 * * *") //매일 오전9-오후5시까지 한시간마다 한번씩 실행
     public void runNotificationJob() {
         executeJob(notificationJob);
+    }
+
+    @Scheduled(fixedDelay = 1000)
+    public void runScrapAndSaveJob() {
+        if (nextDelay.getAndDecrement() <= 0) {
+            executeJob(scrapAndSaveJob);
+
+            // 다음 실행 시간 설정 (1-3분 사이 무작위 선택)
+            int randomMinutes = random.nextInt(3) + 1;
+            nextDelay.set(randomMinutes * 60);
+        }
     }
 
     private void executeJob(Job job) {
